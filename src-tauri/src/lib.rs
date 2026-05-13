@@ -1,0 +1,10 @@
+// Tauri 后端入口：初始化 App 并注册 invoke 命令（目前为空，按需新增）
+
+#[cfg_attr(mobile, tauri::mobile_entry_point)]
+pub fn run() {
+    tauri::Builder::default()
+        .plugin(tauri_plugin_opener::init())
+        .invoke_handler(tauri::generate_handler![])
+        .run(tauri::generate_context!())
+        .expect("error while running tauri application");
+}
