@@ -3,8 +3,9 @@
  */
 import type { ToolModule } from "./types";
 import base64 from "./base64";
+import imageSlicer from "./image-slicer";
 
-export const tools: ToolModule[] = [base64];
+export const tools: ToolModule[] = [base64, imageSlicer];
 
 export function findTool(id: string | undefined): ToolModule | undefined {
   if (!id) return undefined;
