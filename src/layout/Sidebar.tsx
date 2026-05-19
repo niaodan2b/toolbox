@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, type CSSProperties } from "react";
 import { Search, Wrench } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -12,6 +12,8 @@ interface SidebarProps {
   onAfterSelect?: () => void;
   /** 额外类名（例如控制定位与宽度） */
   className?: string;
+  /** 额外内联样式（例如安全区域内边距） */
+  style?: CSSProperties;
 }
 
 function matchTool(tool: ToolModule, query: string): boolean {
@@ -29,6 +31,7 @@ export function Sidebar({
   onSelect,
   onAfterSelect,
   className,
+  style,
 }: SidebarProps) {
   const [query, setQuery] = useState("");
 
@@ -49,6 +52,7 @@ export function Sidebar({
         "bg-sidebar text-sidebar-foreground flex h-full w-full flex-col border-r",
         className,
       )}
+      style={style}
     >
       <div className="flex h-14 shrink-0 items-center gap-2 border-b px-4">
         <Wrench className="size-5" />

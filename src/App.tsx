@@ -18,7 +18,15 @@ function App() {
   return (
     <div className="flex h-screen w-screen flex-col overflow-hidden md:flex-row">
       {/* 移动端顶栏 */}
-      <header className="bg-background flex h-14 shrink-0 items-center gap-2 border-b px-3 md:hidden">
+      <header
+        className="bg-background flex shrink-0 items-center gap-2 border-b px-3 md:hidden"
+        style={{
+          paddingTop: "env(safe-area-inset-top)",
+          paddingLeft: "max(0.75rem, env(safe-area-inset-left))",
+          paddingRight: "max(0.75rem, env(safe-area-inset-right))",
+          height: "calc(3.5rem + env(safe-area-inset-top))",
+        }}
+      >
         <button
           type="button"
           onClick={() => setDrawerOpen(true)}
@@ -38,6 +46,11 @@ function App() {
         activeId={activeId}
         onSelect={setActive}
         onAfterSelect={closeDrawer}
+        style={{
+          paddingTop: "env(safe-area-inset-top)",
+          paddingBottom: "env(safe-area-inset-bottom)",
+          paddingLeft: "env(safe-area-inset-left)",
+        }}
         className={cn(
           "fixed inset-y-0 left-0 z-50 w-72 max-w-[85vw] transform shadow-xl transition-transform duration-200",
           drawerOpen ? "translate-x-0" : "-translate-x-full",
