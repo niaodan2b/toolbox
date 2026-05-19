@@ -20,6 +20,10 @@ import {
   X,
 } from "lucide-react";
 
+import { isTauri } from "@tauri-apps/api/core";
+import { save as saveDialog } from "@tauri-apps/plugin-dialog";
+import { writeFile } from "@tauri-apps/plugin-fs";
+
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -276,25 +280,54 @@ export function ImageSlicerPanel() {
     document.body.removeChild(a);
   };
 
-  const handleExport = () => {
-    // 如果已生成预览，直接下载预览结果，避免重复绘制
+  /** 获取当前拼接结果的 Blob；优先复用预览。 */
+  const getExportBlob = async (): Promise<Blob | null> => {
     if (previewUrl) {
-      downloadFromUrl(previewUrl);
-      toast.success("已导出拼接图片");
+      try {
+        const resp = await fetch(previewUrl);
+        return await resp.blob();
+      } catch {
+        // 预览 URL 失效，重建
+      }
+    }
+    return await new Promise<Blob | null>((resolve) => {
+      const canvas = buildCanvas();
+      if (!canvas) return resolve(null);
+      canvas.toBlob((b) => resolve(b), "image/png");
+    });
+  };
+
+  const handleExport = async () => {
+    const blob = await getExportBlob();
+    if (!blob) {
+      toast.error("导出失败");
       return;
     }
-    const canvas = buildCanvas();
-    if (!canvas) return;
-    canvas.toBlob((blob) => {
-      if (!blob) {
-        toast.error("导出失败");
-        return;
+    const base = imageName.replace(/\.[^.]+$/, "") || "spliced";
+    const fileName = `${base}-spliced.png`;
+
+    // Tauri 运行时（桌面/安卓）：调用原生保存对话框 + 写文件。
+    if (isTauri()) {
+      try {
+        const path = await saveDialog({
+          defaultPath: fileName,
+          filters: [{ name: "PNG 图片", extensions: ["png"] }],
+        });
+        if (!path) return; // 用户取消
+        const bytes = new Uint8Array(await blob.arrayBuffer());
+        await writeFile(path, bytes);
+        toast.success("已导出拼接图片");
+      } catch (e) {
+        toast.error(e instanceof Error ? e.message : "导出失败");
       }
-      const url = URL.createObjectURL(blob);
-      downloadFromUrl(url);
-      URL.revokeObjectURL(url);
-      toast.success("已导出拼接图片");
-    }, "image/png");
+      return;
+    }
+
+    // 浏览者环境：使用下载链接。
+    const url = URL.createObjectURL(blob);
+    downloadFromUrl(url);
+    URL.revokeObjectURL(url);
+    toast.success("已导出拼接图片");
   };
 
   const handleLineMouseDown = (idx: number, e: ReactMouseEvent) => {
