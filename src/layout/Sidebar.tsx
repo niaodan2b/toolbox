@@ -8,6 +8,10 @@ import type { ToolModule } from "@/tools/types";
 interface SidebarProps {
   activeId: string | undefined;
   onSelect: (id: string) => void;
+  /** 选中工具后的回调（例如关闭移动端抽屉） */
+  onAfterSelect?: () => void;
+  /** 额外类名（例如控制定位与宽度） */
+  className?: string;
 }
 
 function matchTool(tool: ToolModule, query: string): boolean {
@@ -20,7 +24,12 @@ function matchTool(tool: ToolModule, query: string): boolean {
   return false;
 }
 
-export function Sidebar({ activeId, onSelect }: SidebarProps) {
+export function Sidebar({
+  activeId,
+  onSelect,
+  onAfterSelect,
+  className,
+}: SidebarProps) {
   const [query, setQuery] = useState("");
 
   const grouped = useMemo(() => {
@@ -35,7 +44,12 @@ export function Sidebar({ activeId, onSelect }: SidebarProps) {
   }, [query]);
 
   return (
-    <aside className="bg-sidebar text-sidebar-foreground flex h-full w-64 flex-col border-r">
+    <aside
+      className={cn(
+        "bg-sidebar text-sidebar-foreground flex h-full w-full flex-col border-r",
+        className,
+      )}
+    >
       <div className="flex h-14 shrink-0 items-center gap-2 border-b px-4">
         <Wrench className="size-5" />
         <span className="text-base font-semibold">工具箱</span>
@@ -72,7 +86,10 @@ export function Sidebar({ activeId, onSelect }: SidebarProps) {
                     <li key={tool.id}>
                       <button
                         type="button"
-                        onClick={() => onSelect(tool.id)}
+                        onClick={() => {
+                          onSelect(tool.id);
+                          onAfterSelect?.();
+                        }}
                         className={cn(
                           "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm transition-colors",
                           isActive &&

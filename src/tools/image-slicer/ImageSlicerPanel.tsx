@@ -5,6 +5,7 @@ import {
   useRef,
   useState,
   type MouseEvent as ReactMouseEvent,
+  type TouchEvent as ReactTouchEvent,
 } from "react";
 import { toast } from "sonner";
 import {
@@ -302,12 +303,17 @@ export function ImageSlicerPanel() {
     setDragIndex(idx);
   };
 
+  const handleLineTouchStart = (idx: number, e: ReactTouchEvent) => {
+    e.stopPropagation();
+    setDragIndex(idx);
+  };
+
   useEffect(() => {
     if (dragIndex === null) return;
-    const handleMove = (e: MouseEvent) => {
+    const updateFromClientY = (clientY: number) => {
       if (!imgRef.current || !naturalSize) return;
       const rect = imgRef.current.getBoundingClientRect();
-      const relY = e.clientY - rect.top;
+      const relY = clientY - rect.top;
       const scale = rect.height / naturalSize.h;
       const natY = Math.max(
         1,
@@ -319,15 +325,28 @@ export function ImageSlicerPanel() {
         return next;
       });
     };
-    const handleUp = () => {
+    const handleMouseMove = (e: MouseEvent) => updateFromClientY(e.clientY);
+    const handleTouchMove = (e: TouchEvent) => {
+      if (e.touches.length === 0) return;
+      // 阻止页面滚动干扰拖动
+      e.preventDefault();
+      updateFromClientY(e.touches[0].clientY);
+    };
+    const handleEnd = () => {
       setDragIndex(null);
       setCuts((prev) => [...prev].sort((a, b) => a - b));
     };
-    window.addEventListener("mousemove", handleMove);
-    window.addEventListener("mouseup", handleUp);
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseup", handleEnd);
+    window.addEventListener("touchmove", handleTouchMove, { passive: false });
+    window.addEventListener("touchend", handleEnd);
+    window.addEventListener("touchcancel", handleEnd);
     return () => {
-      window.removeEventListener("mousemove", handleMove);
-      window.removeEventListener("mouseup", handleUp);
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleEnd);
+      window.removeEventListener("touchmove", handleTouchMove);
+      window.removeEventListener("touchend", handleEnd);
+      window.removeEventListener("touchcancel", handleEnd);
     };
   }, [dragIndex, naturalSize]);
 
@@ -427,7 +446,7 @@ export function ImageSlicerPanel() {
       )}
 
       {imageSrc ? (
-        <div className="grid flex-1 gap-4 lg:grid-cols-[minmax(0,1fr)_300px]">
+        <div className="grid flex-1 gap-4 md:grid-cols-[minmax(0,1fr)_280px]">
           <Card className="min-w-0">
             <CardHeader>
               <CardTitle className="text-base">预览与切割</CardTitle>
@@ -481,12 +500,13 @@ export function ImageSlicerPanel() {
                     return (
                       <div
                         key={`cut-${i}-${y}`}
-                        className="bg-primary absolute left-0 right-0 h-0.5 cursor-ns-resize shadow-sm"
+                        className="bg-primary absolute left-0 right-0 h-0.5 cursor-ns-resize touch-none shadow-sm"
                         style={{
                           top: `${topPct}%`,
                           transform: "translateY(-1px)",
                         }}
                         onMouseDown={(e) => handleLineMouseDown(i, e)}
+                        onTouchStart={(e) => handleLineTouchStart(i, e)}
                         onClick={(e) => e.stopPropagation()}
                       >
                         <div className="absolute -top-2 left-0 right-0 h-5" />

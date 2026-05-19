@@ -80,9 +80,9 @@ export function RhymeFinderPanel() {
             从左侧选择一个或多个韵母，右侧显示对应的常用汉字。
           </CardDescription>
         </CardHeader>
-        <CardContent className="flex min-h-0 flex-1 gap-4">
+        <CardContent className="flex min-h-0 flex-1 flex-col gap-4 md:flex-row">
           {/* 左侧：韵母列表 */}
-          <aside className="flex w-60 shrink-0 flex-col gap-2 border-r pr-4">
+          <aside className="flex w-full shrink-0 flex-col gap-2 border-b pb-4 md:w-60 md:border-b-0 md:border-r md:pr-4 md:pb-0">
             <div className="flex items-center gap-2">
               <Button size="sm" variant="outline" onClick={selectAll}>
                 <ListChecks />
@@ -96,7 +96,7 @@ export function RhymeFinderPanel() {
             <div className="text-xs text-muted-foreground">
               已选 {selected.size} / {allYunmu.length} 个韵母
             </div>
-            <div className="flex-1 overflow-y-auto pr-1">
+            <div className="max-h-48 flex-1 overflow-y-auto pr-1 md:max-h-none">
               <div className="flex flex-wrap gap-1.5">
                 {allYunmu.map((y) => {
                   const active = selected.has(y);
