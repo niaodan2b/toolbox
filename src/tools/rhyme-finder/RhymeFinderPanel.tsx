@@ -100,28 +100,28 @@ export function RhymeFinderPanel() {
   };
 
   return (
-    <div className="flex h-full flex-col gap-4 p-4 md:p-6">
+    <div className="flex h-full flex-col gap-2 p-2 sm:gap-4 sm:p-4 md:p-6">
       <Card className="flex min-h-0 flex-1 flex-col">
-        <CardHeader>
-          <CardTitle>查韵</CardTitle>
-          <CardDescription>
-            从左侧选择一个或多个韵部，右侧显示对应的常用汉字。
+        <CardHeader className="px-3 py-2 sm:px-6 sm:py-4">
+          <CardTitle className="text-base sm:text-lg">查韵</CardTitle>
+          <CardDescription className="text-xs sm:text-sm">
+            选择韵部查看对应的常用汉字
           </CardDescription>
         </CardHeader>
-        <CardContent className="flex min-h-0 flex-1 flex-col gap-4 md:flex-row">
+        <CardContent className="flex min-h-0 flex-1 flex-col gap-3 px-3 sm:gap-4 sm:px-6 md:flex-row">
           {/* 左侧：韵部列表 */}
-          <aside className="flex w-full shrink-0 flex-col gap-2 border-b pb-4 md:w-64 md:border-b-0 md:border-r md:pr-4 md:pb-0">
+          <aside className="flex w-full shrink-0 flex-col gap-1.5 border-b pb-3 sm:gap-2 sm:pb-4 md:w-64 md:border-b-0 md:border-r md:pr-4 md:pb-0">
             <div className="flex items-center justify-between">
-              <div className="text-xs text-muted-foreground">
+              <div className="text-[11px] sm:text-xs text-muted-foreground">
                 已选 {selected.size} / {allGroups.length} 个韵部
               </div>
-              <Button size="sm" variant="ghost" onClick={clear} disabled={selected.size === 0}>
-                <Eraser />
+              <Button size="sm" variant="ghost" onClick={clear} disabled={selected.size === 0} className="h-7 px-2 text-xs sm:h-8 sm:px-3 sm:text-sm">
+                <Eraser className="size-3.5 sm:size-4" />
                 清空
               </Button>
             </div>
-            <div className="max-h-48 flex-1 overflow-y-auto pr-1 md:max-h-none">
-              <div className="grid grid-cols-3 gap-1.5">
+            <div className="max-h-36 flex-1 overflow-y-auto pr-1 sm:max-h-48 md:max-h-none">
+              <div className="grid grid-cols-3 gap-1 sm:gap-1.5">
                 {allGroups.map((label) => {
                   const active = selected.has(label);
                   return (
@@ -130,7 +130,7 @@ export function RhymeFinderPanel() {
                       type="button"
                       onClick={() => toggle(label)}
                       className={cn(
-                        "flex items-center justify-between gap-1 rounded-md border py-1.5 px-2 text-sm transition-colors",
+                        "flex items-center justify-between gap-0.5 rounded-md border py-1 px-1.5 text-xs sm:gap-1 sm:py-1.5 sm:px-2 sm:text-sm transition-colors",
                         active
                           ? "border-primary bg-primary text-primary-foreground"
                           : "border-input bg-background hover:bg-accent hover:text-accent-foreground",
@@ -139,7 +139,7 @@ export function RhymeFinderPanel() {
                       <span className="font-mono">{label}</span>
                       <span
                         className={cn(
-                          "text-xs",
+                          "text-[10px] sm:text-xs",
                           active ? "opacity-80" : "text-muted-foreground",
                         )}
                       >
@@ -153,33 +153,33 @@ export function RhymeFinderPanel() {
           </aside>
 
           {/* 右侧：匹配的汉字 */}
-          <section className="flex min-w-0 flex-1 flex-col gap-2">
+          <section className="flex min-w-0 flex-1 flex-col gap-1.5 sm:gap-2">
             <div className="flex items-center justify-between gap-2">
-              <div className="text-sm text-muted-foreground">
+              <div className="text-xs sm:text-sm text-muted-foreground">
                 {selected.size === 0
-                  ? "请先在左侧选择韵部"
+                  ? "请先选择韵部"
                   : pickedChars.size > 0
-                  ? `已选 ${pickedChars.size} 个汉字 / 共 ${filtered.length} 个`
-                  : `匹配 ${filtered.length} 个汉字，点击可选中`}
+                  ? `已选 ${pickedChars.size} 字 / 共 ${filtered.length} 字`
+                  : `${filtered.length} 字，点击选中`}
               </div>
               <Button
                 size="sm"
                 variant="outline"
                 disabled={pickedChars.size === 0}
                 onClick={copyPicked}
-                className="shrink-0"
+                className="shrink-0 h-7 px-2 text-xs sm:h-8 sm:px-3 sm:text-sm"
               >
-                {copied ? <Check className="text-green-500" /> : <ClipboardCopy />}
+                {copied ? <Check className="text-green-500 size-3.5 sm:size-4" /> : <ClipboardCopy className="size-3.5 sm:size-4" />}
                 {copied ? "已复制" : "复制"}
               </Button>
             </div>
-            <div className="flex-1 overflow-y-auto rounded-md border p-3">
+            <div className="flex-1 overflow-y-auto rounded-md border p-2 sm:p-3">
               {filtered.length === 0 ? (
                 <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
                   暂无内容
                 </div>
               ) : (
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-1 sm:gap-2">
                   {filtered.map((e) => {
                     const isPicked = pickedChars.has(e.char);
                     return (
@@ -189,16 +189,16 @@ export function RhymeFinderPanel() {
                         title={e.pinyin.join(" / ")}
                         onClick={() => toggleChar(e.char)}
                         className={cn(
-                          "flex min-w-[3rem] flex-col items-center rounded-md border px-2 py-1 text-center transition-colors",
+                          "flex min-w-[2.5rem] sm:min-w-[3rem] flex-col items-center rounded-md border px-1.5 py-0.5 sm:px-2 sm:py-1 text-center transition-colors",
                           isPicked
                             ? "border-primary bg-primary text-primary-foreground"
                             : "bg-card hover:bg-accent hover:text-accent-foreground",
                         )}
                       >
-                        <span className="text-lg leading-tight">{e.char}</span>
+                        <span className="text-base sm:text-lg leading-tight">{e.char}</span>
                         <span
                           className={cn(
-                            "font-mono text-[10px]",
+                            "font-mono text-[9px] sm:text-[10px]",
                             isPicked ? "opacity-80" : "text-muted-foreground",
                           )}
                         >
