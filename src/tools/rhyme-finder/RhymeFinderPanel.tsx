@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { Check, ClipboardCopy, Eraser } from "lucide-react";
+import { Check, ChevronDown, ChevronUp, ClipboardCopy, Eraser } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -31,6 +31,7 @@ export function RhymeFinderPanel() {
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [pickedChars, setPickedChars] = useState<Set<string>>(new Set());
   const [copied, setCopied] = useState(false);
+  const [rhymeCollapsed, setRhymeCollapsed] = useState(false);
 
   // 每个韵部对应的字数统计
   const { allGroups, counts } = useMemo(() => {
@@ -110,17 +111,30 @@ export function RhymeFinderPanel() {
         </CardHeader>
         <CardContent className="flex min-h-0 flex-1 flex-col gap-3 px-3 sm:gap-4 sm:px-6 md:flex-row">
           {/* 左侧：韵部列表 */}
-          <aside className="flex w-full shrink-0 flex-col gap-1.5 border-b pb-3 sm:gap-2 sm:pb-4 md:w-64 md:border-b-0 md:border-r md:pr-4 md:pb-0">
+          <aside className={cn(
+            "flex w-full shrink-0 flex-col gap-1.5 border-b pb-3 sm:gap-2 sm:pb-4 md:w-64 md:border-b-0 md:border-r md:pr-4 md:pb-0",
+            rhymeCollapsed && "pb-1 sm:pb-2"
+          )}>
             <div className="flex items-center justify-between">
-              <div className="text-[11px] sm:text-xs text-muted-foreground">
-                已选 {selected.size} / {allGroups.length} 个韵部
-              </div>
+              <button
+                type="button"
+                onClick={() => setRhymeCollapsed((v) => !v)}
+                className="flex items-center gap-1 text-[11px] sm:text-xs text-muted-foreground md:pointer-events-none"
+              >
+                {rhymeCollapsed
+                  ? <ChevronDown className="size-3.5 md:hidden" />
+                  : <ChevronUp className="size-3.5 md:hidden" />}
+                <span>已选 {selected.size} / {allGroups.length} 个韵部</span>
+              </button>
               <Button size="sm" variant="ghost" onClick={clear} disabled={selected.size === 0} className="h-7 px-2 text-xs sm:h-8 sm:px-3 sm:text-sm">
                 <Eraser className="size-3.5 sm:size-4" />
                 清空
               </Button>
             </div>
-            <div className="max-h-36 flex-1 overflow-y-auto pr-1 sm:max-h-48 md:max-h-none">
+            <div className={cn(
+              "max-h-36 flex-1 overflow-y-auto pr-1 sm:max-h-48 md:max-h-none",
+              rhymeCollapsed && "hidden md:block"
+            )}>
               <div className="grid grid-cols-3 gap-1 sm:gap-1.5">
                 {allGroups.map((label) => {
                   const active = selected.has(label);
@@ -153,7 +167,7 @@ export function RhymeFinderPanel() {
           </aside>
 
           {/* 右侧：匹配的汉字 */}
-          <section className="flex min-w-0 flex-1 flex-col gap-1.5 sm:gap-2">
+          <section className="flex min-h-0 min-w-0 flex-1 flex-col gap-1.5 sm:gap-2">
             <div className="flex items-center justify-between gap-2">
               <div className="text-xs sm:text-sm text-muted-foreground">
                 {selected.size === 0
@@ -198,7 +212,7 @@ export function RhymeFinderPanel() {
                         <span className="text-base sm:text-lg leading-tight">{e.char}</span>
                         <span
                           className={cn(
-                            "font-mono text-[9px] sm:text-[10px]",
+                            "hidden sm:inline font-mono text-[9px] sm:text-[10px]",
                             isPicked ? "opacity-80" : "text-muted-foreground",
                           )}
                         >
