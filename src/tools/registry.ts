@@ -7,8 +7,9 @@ import imageSlicer from "./image-slicer";
 import rhymeFinder from "./rhyme-finder";
 import txtCombiner from "./txt-combiner";
 import videoCounter from "./video-counter";
+import videoSplitter from "./video-splitter";
 
-export const tools: ToolModule[] = [base64, imageSlicer, rhymeFinder, txtCombiner, videoCounter];
+export const tools: ToolModule[] = [base64, imageSlicer, rhymeFinder, txtCombiner, videoCounter, videoSplitter];
 
 export function findTool(id: string | undefined): ToolModule | undefined {
   if (!id) return undefined;

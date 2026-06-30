@@ -1,4 +1,6 @@
-// Tauri 后端入口：初始化 App 并注册 invoke 命令（目前为空，按需新增）
+mod commands;
+
+use commands::{check_ffmpeg, split_video};
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -6,7 +8,7 @@ pub fn run() {
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_fs::init())
-        .invoke_handler(tauri::generate_handler![])
+        .invoke_handler(tauri::generate_handler![check_ffmpeg, split_video])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

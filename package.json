@@ -6,10 +6,11 @@
   "scripts": {
     "start": "vite",
     "dev": "vite",
+    "dev-app": "tauri dev",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "tauri": "tauri",
-    "build-apk": "bun tauri android build --apk --target aarch64 && open ./src-tauri/gen/android/app/build/outputs/apk/universal/release/"
+    "build-apk": "tauri android build --apk --target aarch64"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.4",

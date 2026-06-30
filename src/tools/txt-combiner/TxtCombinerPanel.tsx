@@ -9,7 +9,6 @@ import {
   FilePlus,
   Pencil,
   Trash2,
-  Merge,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
