@@ -9,6 +9,10 @@ pub struct Segment {
     pub filename: String,
 }
 
+fn format_timestamp(seconds: f64) -> String {
+    format!("{seconds:.6}")
+}
+
 #[tauri::command]
 pub fn check_ffmpeg() -> Result<String, String> {
     let output = Command::new("ffmpeg")
@@ -62,20 +66,31 @@ pub async fn split_video(
             ));
         }
 
-        let duration = segment.end - segment.start;
         let output_path = output.join(&segment.filename);
 
+        // -ss 放在 -i 之后并重新编码，可在任意帧精确切割；
+        // -c copy 只能在关键帧切割，通常会有数秒误差。
         let result = Command::new("ffmpeg")
             .args([
                 "-y",
-                "-ss",
-                &format!("{:.3}", segment.start),
                 "-i",
                 &input_path,
-                "-t",
-                &format!("{:.3}", duration),
-                "-c",
-                "copy",
+                "-ss",
+                &format_timestamp(segment.start),
+                "-to",
+                &format_timestamp(segment.end),
+                "-c:v",
+                "libx264",
+                "-preset",
+                "fast",
+                "-crf",
+                "18",
+                "-c:a",
+                "aac",
+                "-b:a",
+                "192k",
+                "-movflags",
+                "+faststart",
                 "-avoid_negative_ts",
                 "make_zero",
                 output_path.to_string_lossy().as_ref(),
