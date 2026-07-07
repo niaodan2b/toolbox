@@ -265,7 +265,7 @@ export function VideoSplitterPanel() {
       {tauriEnv && ffmpegReady === false && (
         <Card className="border-destructive/40 bg-destructive/10">
           <CardContent className="py-3 text-sm text-destructive">
-            未检测到 ffmpeg。请先安装并确保可在终端执行 `ffmpeg`（macOS: `brew install ffmpeg`）。
+            未检测到 ffmpeg。请先安装（macOS: `brew install ffmpeg`）。
           </CardContent>
         </Card>
       )}
