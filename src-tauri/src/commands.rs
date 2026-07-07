@@ -99,11 +99,7 @@ fn run_ffmpeg_version(ffmpeg: &Path) -> Result<String, String> {
     }
 
     let stdout = String::from_utf8_lossy(&output.stdout);
-    Ok(stdout
-        .lines()
-        .next()
-        .unwrap_or("ffmpeg")
-        .to_string())
+    Ok(stdout.lines().next().unwrap_or("ffmpeg").to_string())
 }
 
 fn resolve_ffmpeg() -> Result<PathBuf, String> {

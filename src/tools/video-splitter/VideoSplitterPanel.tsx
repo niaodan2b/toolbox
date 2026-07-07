@@ -298,7 +298,7 @@ export function VideoSplitterPanel() {
                   ref={videoRef}
                   src={previewSrc}
                   className="max-h-105 w-full rounded-md bg-black object-contain"
-                  controls={false}
+                  controls={true}
                   onLoadedMetadata={handleLoadedMetadata}
                   onTimeUpdate={handleTimeUpdate}
                   onPlay={() => setIsPlaying(true)}
