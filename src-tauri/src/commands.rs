@@ -2,6 +2,20 @@ use serde::Deserialize;
 use std::path::{Path, PathBuf};
 use std::process::Command;
 
+#[cfg(windows)]
+use std::os::windows::process::CommandExt;
+
+#[cfg(windows)]
+const CREATE_NO_WINDOW: u32 = 0x08000000;
+
+fn new_ffmpeg_command(ffmpeg: &Path) -> Command {
+    let mut command = Command::new(ffmpeg);
+    command.env("PATH", augmented_path());
+    #[cfg(windows)]
+    command.creation_flags(CREATE_NO_WINDOW);
+    command
+}
+
 #[derive(Debug, Deserialize)]
 pub struct Segment {
     pub start: f64,
@@ -87,10 +101,8 @@ fn ffmpeg_candidates() -> Vec<PathBuf> {
 }
 
 fn run_ffmpeg_version(ffmpeg: &Path) -> Result<String, String> {
-    let mut command = Command::new(ffmpeg);
-    command.arg("-version").env("PATH", augmented_path());
-
-    let output = command
+    let output = new_ffmpeg_command(ffmpeg)
+        .arg("-version")
         .output()
         .map_err(|error| format!("执行 ffmpeg 失败: {error}"))?;
 
@@ -158,8 +170,7 @@ pub async fn split_video(
 
         // -ss 放在 -i 之后并重新编码，可在任意帧精确切割；
         // -c copy 只能在关键帧切割，通常会有数秒误差。
-        let result = Command::new(&ffmpeg)
-            .env("PATH", augmented_path())
+        let result = new_ffmpeg_command(&ffmpeg)
             .args([
                 "-y",
                 "-i",

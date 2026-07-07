@@ -1,7 +1,19 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
-import { MapPin, Pause, Play, Scissors, Trash2, Video } from "lucide-react";
+import {
+  FastForward,
+  MapPin,
+  Pause,
+  Play,
+  Rewind,
+  Scissors,
+  SkipBack,
+  SkipForward,
+  Trash2,
+  Video,
+} from "lucide-react";
 import { convertFileSrc, invoke, isTauri } from "@tauri-apps/api/core";
+import { getCurrentWebview } from "@tauri-apps/api/webview";
 import { open } from "@tauri-apps/plugin-dialog";
 
 import { Button } from "@/components/ui/button";
@@ -30,6 +42,11 @@ interface Marker {
 
 const VIDEO_EXTENSIONS = ["mp4", "mkv", "webm", "avi", "mov", "flv", "wmv", "m4v"];
 
+function isVideoFile(path: string): boolean {
+  const ext = path.split(".").pop()?.toLowerCase();
+  return !!ext && VIDEO_EXTENSIONS.includes(ext);
+}
+
 let markerIdCounter = 0;
 function createMarkerId(): string {
   return `marker-${Date.now()}-${++markerIdCounter}`;
@@ -48,8 +65,14 @@ export function VideoSplitterPanel() {
   const [invalidMarkerIds, setInvalidMarkerIds] = useState<Set<string>>(new Set());
   const [exporting, setExporting] = useState(false);
   const [exportProgress, setExportProgress] = useState("");
+  const [isDragOver, setIsDragOver] = useState(false);
+  const [segmentDialogOpen, setSegmentDialogOpen] = useState(false);
+  const [selectedSegmentIndices, setSelectedSegmentIndices] = useState<Set<number>>(
+    new Set(),
+  );
 
   const videoRef = useRef<HTMLVideoElement>(null);
+  const dropZoneRef = useRef<HTMLDivElement>(null);
   const tauriEnv = isTauri();
 
   useEffect(() => {
@@ -70,6 +93,22 @@ export function VideoSplitterPanel() {
     setExportProgress("");
   }, []);
 
+  const loadVideo = useCallback(
+    (selected: string) => {
+      if (!isVideoFile(selected)) {
+        toast.error("请选择支持的视频文件");
+        return;
+      }
+
+      const fileName = selected.split(/[/\\]/).pop() ?? selected;
+      resetVideoState();
+      setVideoPath(selected);
+      setVideoName(fileName);
+      setPreviewSrc(convertFileSrc(selected));
+    },
+    [resetVideoState],
+  );
+
   const handleSelectVideo = useCallback(async () => {
     if (!tauriEnv) {
       toast.error("请在桌面应用中运行此工具");
@@ -89,12 +128,54 @@ export function VideoSplitterPanel() {
 
     if (!selected || Array.isArray(selected)) return;
 
-    const fileName = selected.split(/[/\\]/).pop() ?? selected;
-    resetVideoState();
-    setVideoPath(selected);
-    setVideoName(fileName);
-    setPreviewSrc(convertFileSrc(selected));
-  }, [resetVideoState, tauriEnv]);
+    loadVideo(selected);
+  }, [loadVideo, tauriEnv]);
+
+  useEffect(() => {
+    if (!tauriEnv || exporting) return;
+
+    let unlisten: (() => void) | undefined;
+    let cancelled = false;
+
+    const isPointInDropZone = (x: number, y: number) => {
+      const rect = dropZoneRef.current?.getBoundingClientRect();
+      if (!rect) return false;
+      return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
+    };
+
+    void getCurrentWebview()
+      .onDragDropEvent((event) => {
+        const payload = event.payload;
+
+        if (payload.type === "over") {
+          setIsDragOver(isPointInDropZone(payload.position.x, payload.position.y));
+          return;
+        }
+
+        setIsDragOver(false);
+
+        if (payload.type !== "drop") return;
+        if (!isPointInDropZone(payload.position.x, payload.position.y)) return;
+
+        const droppedVideo = payload.paths.find(isVideoFile);
+        if (!droppedVideo) {
+          toast.error("请拖入支持的视频文件");
+          return;
+        }
+
+        loadVideo(droppedVideo);
+      })
+      .then((fn) => {
+        if (cancelled) fn();
+        else unlisten = fn;
+      });
+
+    return () => {
+      cancelled = true;
+      unlisten?.();
+      setIsDragOver(false);
+    };
+  }, [exporting, loadVideo, tauriEnv]);
 
   const sortedMarkers = useMemo(
     () => [...markers].sort((a, b) => a.seconds - b.seconds),
@@ -159,6 +240,14 @@ export function VideoSplitterPanel() {
     setCurrentTime(seconds);
   };
 
+  const seekBy = (deltaSeconds: number) => {
+    const video = videoRef.current;
+    if (!video) return;
+    const maxTime = duration > 0 ? duration : video.duration;
+    const next = Math.min(Math.max(0, video.currentTime + deltaSeconds), maxTime || 0);
+    seekTo(next);
+  };
+
   const addMarker = () => {
     if (!videoRef.current || duration <= 0) return;
 
@@ -216,9 +305,38 @@ export function VideoSplitterPanel() {
     );
   };
 
-  const handleExport = async () => {
-    if (!videoPath || !tauriEnv) return;
+  const handleOpenExportDialog = () => {
     if (markers.length === 0 || invalidMarkerIds.size > 0 || segments.length === 0) return;
+    setSelectedSegmentIndices(new Set(segments.map((_, index) => index)));
+    setSegmentDialogOpen(true);
+  };
+
+  const toggleSegmentSelection = (index: number) => {
+    setSelectedSegmentIndices((prev) => {
+      const next = new Set(prev);
+      if (next.has(index)) next.delete(index);
+      else next.add(index);
+      return next;
+    });
+  };
+
+  const selectAllSegments = () => {
+    setSelectedSegmentIndices(new Set(segments.map((_, index) => index)));
+  };
+
+  const deselectAllSegments = () => {
+    setSelectedSegmentIndices(new Set());
+  };
+
+  const handleConfirmExport = async () => {
+    if (!videoPath || !tauriEnv) return;
+    if (selectedSegmentIndices.size === 0) {
+      toast.error("请至少选择一个片段");
+      return;
+    }
+
+    const selectedSegments = segments.filter((_, index) => selectedSegmentIndices.has(index));
+    setSegmentDialogOpen(false);
 
     const outputDir = await open({
       multiple: false,
@@ -226,7 +344,7 @@ export function VideoSplitterPanel() {
     });
     if (!outputDir || Array.isArray(outputDir)) return;
 
-    const payload = segments.map((segment) => ({
+    const payload = selectedSegments.map((segment) => ({
       start: segment.start,
       end: segment.end,
       filename: buildOutputFilename(baseName, ext, segment.start, segment.end),
@@ -274,7 +392,7 @@ export function VideoSplitterPanel() {
         <CardHeader>
           <CardTitle>视频分割</CardTitle>
           <CardDescription>
-            选择视频并标记切割点，点击「开始分割」选择输出目录后导出。采用重编码以实现精确切割，耗时较流复制更长。
+            选择视频并标记切割点，点击「开始分割」勾选要导出的片段后选择输出目录。采用重编码以实现精确切割，耗时较流复制更长。
           </CardDescription>
         </CardHeader>
 
@@ -292,7 +410,18 @@ export function VideoSplitterPanel() {
           </div>
 
           <div className="grid flex-1 gap-4 lg:grid-cols-[minmax(0,2fr)_minmax(280px,1fr)]">
-            <div className="flex min-h-70 flex-col gap-3 rounded-md border p-3">
+            <div
+              ref={dropZoneRef}
+              className={cn(
+                "relative flex min-h-70 flex-col gap-3 rounded-md border p-3 transition-colors",
+                isDragOver && "border-primary bg-primary/5 ring-2 ring-primary/30",
+              )}
+            >
+              {isDragOver && (
+                <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center rounded-md bg-primary/10">
+                  <span className="text-sm font-medium text-primary">释放以加载视频</span>
+                </div>
+              )}
               {previewSrc ? (
                 <video
                   ref={videoRef}
@@ -308,7 +437,48 @@ export function VideoSplitterPanel() {
               ) : (
                 <div className="flex flex-1 flex-col items-center justify-center gap-2 text-muted-foreground">
                   <Video className="size-10 opacity-50" />
-                  <span>请选择视频文件</span>
+                  <span>请选择或拖入视频文件</span>
+                </div>
+              )}
+
+              {previewSrc && (
+                <div className="flex items-center justify-center gap-2">
+                  <Button
+                    size="icon"
+                    variant="secondary"
+                    onClick={() => seekBy(-30)}
+                    aria-label="快退 30 秒"
+                    title="快退 30 秒"
+                  >
+                    <Rewind />
+                  </Button>
+                  <Button
+                    size="icon"
+                    variant="secondary"
+                    onClick={() => seekBy(-5)}
+                    aria-label="快退 5 秒"
+                    title="快退 5 秒"
+                  >
+                    <SkipBack />
+                  </Button>
+                  <Button
+                    size="icon"
+                    variant="secondary"
+                    onClick={() => seekBy(5)}
+                    aria-label="快进 5 秒"
+                    title="快进 5 秒"
+                  >
+                    <SkipForward />
+                  </Button>
+                  <Button
+                    size="icon"
+                    variant="secondary"
+                    onClick={() => seekBy(30)}
+                    aria-label="快进 30 秒"
+                    title="快进 30 秒"
+                  >
+                    <FastForward />
+                  </Button>
                 </div>
               )}
 
@@ -386,13 +556,93 @@ export function VideoSplitterPanel() {
             {exportProgress && (
               <span className="text-sm text-muted-foreground">{exportProgress}</span>
             )}
-            <Button onClick={handleExport} disabled={!canExport}>
+            <Button onClick={handleOpenExportDialog} disabled={!canExport}>
               <Scissors />
               开始分割
             </Button>
           </div>
         </CardContent>
       </Card>
+
+      {segmentDialogOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+          onClick={() => setSegmentDialogOpen(false)}
+        >
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="segment-dialog-title"
+            className="flex max-h-[min(80vh,640px)] w-full max-w-lg flex-col rounded-xl border bg-card shadow-lg"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="border-b px-6 py-4">
+              <h2 id="segment-dialog-title" className="text-lg font-semibold">
+                选择要导出的片段
+              </h2>
+              <p className="mt-1 text-sm text-muted-foreground">
+                共 {segments.length} 个片段，已选 {selectedSegmentIndices.size} 个
+              </p>
+            </div>
+
+            <div className="flex items-center gap-2 border-b px-6 py-2">
+              <Button size="sm" variant="outline" onClick={selectAllSegments}>
+                全选
+              </Button>
+              <Button size="sm" variant="outline" onClick={deselectAllSegments}>
+                取消全选
+              </Button>
+            </div>
+
+            <ul className="flex-1 space-y-2 overflow-auto p-4">
+              {segments.map((segment, index) => {
+                const length = segment.end - segment.start;
+                const checked = selectedSegmentIndices.has(index);
+
+                return (
+                  <li key={`${segment.start}-${segment.end}`}>
+                    <label
+                      className={cn(
+                        "flex cursor-pointer items-start gap-3 rounded-md border px-3 py-2.5 transition-colors",
+                        checked && "border-primary/40 bg-primary/5",
+                      )}
+                    >
+                      <input
+                        type="checkbox"
+                        className="mt-1 size-4 shrink-0 accent-primary"
+                        checked={checked}
+                        onChange={() => toggleSegmentSelection(index)}
+                      />
+                      <div className="min-w-0 flex-1">
+                        <div className="text-sm font-medium">片段 {index + 1}</div>
+                        <div className="mt-0.5 font-mono text-sm text-muted-foreground">
+                          {formatTime(segment.start)} → {formatTime(segment.end)}
+                        </div>
+                        <div className="mt-0.5 text-xs text-muted-foreground">
+                          长度 {formatTime(length)}
+                        </div>
+                      </div>
+                    </label>
+                  </li>
+                );
+              })}
+            </ul>
+
+            <div className="flex justify-end gap-2 border-t px-6 py-4">
+              <Button variant="outline" onClick={() => setSegmentDialogOpen(false)}>
+                取消
+              </Button>
+              <Button
+                onClick={handleConfirmExport}
+                disabled={selectedSegmentIndices.size === 0}
+              >
+                <Scissors />
+                导出选中片段
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
