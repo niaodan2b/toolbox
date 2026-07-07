@@ -1,5 +1,5 @@
 {
   "default": "../src/assets/app-logo.png",
-  "bg_color": "#000000",
-  "android_fg_scale": 72
+  "bg_color": "#ffffff",
+  "android_fg_scale": 70
 }
