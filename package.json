@@ -10,7 +10,7 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "tauri": "tauri",
-    "update-icons": "tauri icon src-tauri/icon-manifest.json -o src-tauri/icons && cp -f src/assets/icon.icns src-tauri/icons/",
+    "update-icons": "python3 scripts/prepare-android-icon.py && tauri icon src-tauri/icon-manifest.json -o src-tauri/icons && cp -f src/assets/icon.icns src-tauri/icons/",
     "build-desktop": "tauri build",
     "build-apk": "tauri android build --apk --target aarch64"
   },
