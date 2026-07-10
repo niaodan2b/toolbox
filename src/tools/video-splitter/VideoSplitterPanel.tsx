@@ -1,14 +1,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 import {
-  FastForward,
   MapPin,
   Pause,
   Play,
-  Rewind,
   Scissors,
-  SkipBack,
-  SkipForward,
   Trash2,
   Video,
 } from "lucide-react";
@@ -442,42 +438,69 @@ export function VideoSplitterPanel() {
               )}
 
               {previewSrc && (
-                <div className="flex items-center justify-center gap-2">
-                  <Button
-                    size="icon"
-                    variant="secondary"
-                    onClick={() => seekBy(-30)}
-                    aria-label="快退 30 秒"
-                    title="快退 30 秒"
-                  >
-                    <Rewind />
-                  </Button>
-                  <Button
-                    size="icon"
-                    variant="secondary"
-                    onClick={() => seekBy(-5)}
-                    aria-label="快退 5 秒"
-                    title="快退 5 秒"
-                  >
-                    <SkipBack />
-                  </Button>
-                  <Button
-                    size="icon"
-                    variant="secondary"
-                    onClick={() => seekBy(5)}
-                    aria-label="快进 5 秒"
-                    title="快进 5 秒"
-                  >
-                    <SkipForward />
-                  </Button>
-                  <Button
-                    size="icon"
-                    variant="secondary"
-                    onClick={() => seekBy(30)}
-                    aria-label="快进 30 秒"
-                    title="快进 30 秒"
-                  >
-                    <FastForward />
+                <div className="flex flex-wrap items-center justify-center gap-2">
+                    <Button
+                      size="sm"
+                      variant="secondary"
+                      onClick={() => seekBy(-120)}
+                      aria-label="快退 2 分钟"
+                      title="快退 2 分钟"
+                    >
+                      -2min
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="secondary"
+                      onClick={() => seekBy(-30)}
+                      aria-label="快退 30 秒"
+                      title="快退 30 秒"
+                    >
+                      -30s
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="secondary"
+                      onClick={() => seekBy(-5)}
+                      aria-label="快退 5 秒"
+                      title="快退 5 秒"
+                    >
+                      -5s
+                    </Button>
+                    <Button
+                      size="icon"
+                      variant="secondary"
+                      onClick={togglePlayback}
+                      aria-label={isPlaying ? "暂停" : "播放"}
+                      title={isPlaying ? "暂停" : "播放"}
+                    >
+                      {isPlaying ? <Pause /> : <Play />}
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="secondary"
+                      onClick={() => seekBy(5)}
+                      aria-label="快进 5 秒"
+                      title="快进 5 秒"
+                    >
+                      +5s
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="secondary"
+                      onClick={() => seekBy(30)}
+                      aria-label="快进 30 秒"
+                      title="快进 30 秒"
+                    >
+                      +30s
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="secondary"
+                      onClick={() => seekBy(120)}
+                      aria-label="快进 2 分钟"
+                      title="快进 2 分钟"
+                    >
+                    +2min
                   </Button>
                 </div>
               )}
@@ -486,15 +509,6 @@ export function VideoSplitterPanel() {
                 <span className="font-mono text-sm">
                   {formatTime(currentTime)} / {duration > 0 ? formatTime(duration) : "--:--:--"}
                 </span>
-                <Button
-                  size="sm"
-                  variant="secondary"
-                  onClick={togglePlayback}
-                  disabled={!previewSrc}
-                >
-                  {isPlaying ? <Pause /> : <Play />}
-                  {isPlaying ? "暂停" : "播放"}
-                </Button>
                 <Button size="sm" onClick={addMarker} disabled={!previewSrc || duration <= 0}>
                   <MapPin />
                   添加标记
