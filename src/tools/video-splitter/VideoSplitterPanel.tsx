@@ -91,6 +91,11 @@ export function VideoSplitterPanel() {
 
   const loadVideo = useCallback(
     (selected: string) => {
+      if (markers.length > 0) {
+        toast.error("存在标记时无法更换视频，请先删除所有标记");
+        return;
+      }
+
       if (!isVideoFile(selected)) {
         toast.error("请选择支持的视频文件");
         return;
@@ -102,7 +107,7 @@ export function VideoSplitterPanel() {
       setVideoName(fileName);
       setPreviewSrc(convertFileSrc(selected));
     },
-    [resetVideoState],
+    [markers.length, resetVideoState],
   );
 
   const handleSelectVideo = useCallback(async () => {
@@ -128,7 +133,7 @@ export function VideoSplitterPanel() {
   }, [loadVideo, tauriEnv]);
 
   useEffect(() => {
-    if (!tauriEnv || exporting) return;
+    if (!tauriEnv || exporting || markers.length > 0) return;
 
     let unlisten: (() => void) | undefined;
     let cancelled = false;
@@ -171,7 +176,7 @@ export function VideoSplitterPanel() {
       unlisten?.();
       setIsDragOver(false);
     };
-  }, [exporting, loadVideo, tauriEnv]);
+  }, [exporting, loadVideo, markers.length, tauriEnv]);
 
   const sortedMarkers = useMemo(
     () => [...markers].sort((a, b) => a.seconds - b.seconds),
@@ -303,7 +308,13 @@ export function VideoSplitterPanel() {
 
   const handleOpenExportDialog = () => {
     if (markers.length === 0 || invalidMarkerIds.size > 0 || segments.length === 0) return;
-    setSelectedSegmentIndices(new Set(segments.map((_, index) => index)));
+    setSelectedSegmentIndices(
+      new Set(
+        segments.flatMap((segment, index) =>
+          segment.end - segment.start < 60 ? [index] : [],
+        ),
+      ),
+    );
     setSegmentDialogOpen(true);
   };
 
@@ -357,6 +368,9 @@ export function VideoSplitterPanel() {
       });
 
       setExportProgress(`完成，共导出 ${written.length} 个片段`);
+      setMarkers([]);
+      setMarkerInputs({});
+      setInvalidMarkerIds(new Set());
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
       setExportProgress("");
@@ -394,7 +408,11 @@ export function VideoSplitterPanel() {
 
         <CardContent className="flex flex-1 flex-col gap-4">
           <div className="flex flex-wrap items-center gap-2">
-            <Button onClick={handleSelectVideo} disabled={!tauriEnv || exporting}>
+            <Button
+              onClick={handleSelectVideo}
+              disabled={!tauriEnv || exporting || markers.length > 0}
+              title={markers.length > 0 ? "请先删除所有标记后再更换视频" : undefined}
+            >
               <Video />
               选择视频
             </Button>
@@ -507,7 +525,7 @@ export function VideoSplitterPanel() {
 
               <div className="flex flex-wrap items-center gap-2">
                 <span className="font-mono text-sm">
-                  {formatTime(currentTime)} / {duration > 0 ? formatTime(duration) : "--:--:--"}
+                  {formatTime(currentTime)} / {duration > 0 ? formatTime(duration) : "--:--:--.---"}
                 </span>
                 <Button size="sm" onClick={addMarker} disabled={!previewSrc || duration <= 0}>
                   <MapPin />

@@ -4,18 +4,20 @@ export interface VideoSegment {
 }
 
 export function formatTime(seconds: number): string {
-  const h = Math.floor(seconds / 3600);
-  const m = Math.floor((seconds % 3600) / 60);
-  const s = Math.floor(seconds % 60);
-  return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+  const totalMs = Math.round(seconds * 1000);
+  const h = Math.floor(totalMs / 3_600_000);
+  const m = Math.floor((totalMs % 3_600_000) / 60_000);
+  const s = Math.floor((totalMs % 60_000) / 1000);
+  const ms = totalMs % 1000;
+  return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}.${String(ms).padStart(3, "0")}`;
 }
 
 export function formatTimeForFilename(seconds: number): string {
-  return formatTime(seconds).replace(/:/g, "-");
+  return formatTime(seconds).replace(/[:.]/g, "-");
 }
 
 export function parseTime(value: string): number | null {
-  const trimmed = value.trim();
+  const trimmed = value.trim().replace(/,/g, ".");
   if (!trimmed) return null;
 
   if (/^\d+(\.\d+)?$/.test(trimmed)) {
@@ -30,7 +32,7 @@ export function parseTime(value: string): number | null {
 
   if (parts.length === 2) {
     const [m, s] = parts;
-    if (s >= 60) return null;
+    if (m >= 60 || s >= 60) return null;
     return m * 60 + s;
   }
 
@@ -90,7 +92,7 @@ export function computeSegments(markers: number[], duration: number): VideoSegme
   return segments;
 }
 
-export function isDuplicateMarker(markers: number[], seconds: number, epsilon = 0.1): boolean {
+export function isDuplicateMarker(markers: number[], seconds: number, epsilon = 0.001): boolean {
   return markers.some((marker) => Math.abs(marker - seconds) < epsilon);
 }
 
