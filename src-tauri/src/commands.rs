@@ -218,3 +218,98 @@ pub async fn split_video(
 
     Ok(written)
 }
+
+fn run_ffmpeg_args(ffmpeg: &Path, args: &[&str]) -> Result<(), String> {
+    let result = new_ffmpeg_command(ffmpeg)
+        .args(args)
+        .output()
+        .map_err(|e| format!("执行 ffmpeg 失败: {e}"))?;
+
+    if result.status.success() {
+        return Ok(());
+    }
+
+    let stderr = String::from_utf8_lossy(&result.stderr);
+    let summary = stderr
+        .lines()
+        .rev()
+        .find(|line| !line.trim().is_empty())
+        .unwrap_or("未知错误");
+    Err(summary.to_string())
+}
+
+#[tauri::command]
+pub async fn separate_audio_video(
+    input_path: String,
+    output_dir: String,
+    audio_filename: String,
+    video_filename: String,
+) -> Result<Vec<String>, String> {
+    let input = PathBuf::from(&input_path);
+    if !input.exists() {
+        return Err(format!("输入文件不存在: {input_path}"));
+    }
+
+    let output = PathBuf::from(&output_dir);
+    if !output.is_dir() {
+        return Err(format!("输出目录不存在: {output_dir}"));
+    }
+
+    let ffmpeg = resolve_ffmpeg()?;
+    let audio_path = output.join(&audio_filename);
+    let video_path = output.join(&video_filename);
+    let audio_path_str = audio_path.to_string_lossy().into_owned();
+    let video_path_str = video_path.to_string_lossy().into_owned();
+
+    run_ffmpeg_args(
+        &ffmpeg,
+        &[
+            "-y",
+            "-i",
+            &input_path,
+            "-vn",
+            "-codec:a",
+            "libmp3lame",
+            "-q:a",
+            "2",
+            &audio_path_str,
+        ],
+    )
+    .map_err(|summary| format!("提取音频失败: {summary}"))?;
+
+    let video_copy_args = [
+        "-y",
+        "-i",
+        &input_path,
+        "-an",
+        "-c:v",
+        "copy",
+        "-movflags",
+        "+faststart",
+        &video_path_str,
+    ];
+
+    if run_ffmpeg_args(&ffmpeg, &video_copy_args).is_err() {
+        run_ffmpeg_args(
+            &ffmpeg,
+            &[
+                "-y",
+                "-i",
+                &input_path,
+                "-an",
+                "-c:v",
+                "libx264",
+                "-preset",
+                "fast",
+                "-crf",
+                "18",
+                "-movflags",
+                "+faststart",
+                &video_path_str,
+            ],
+        )
+        .map_err(|summary| format!("导出无声视频失败: {summary}"))?;
+    }
+
+    Ok(vec![audio_path_str, video_path_str])
+}
