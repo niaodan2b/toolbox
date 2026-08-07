@@ -37,10 +37,26 @@ interface Marker {
 }
 
 const VIDEO_EXTENSIONS = ["mp4", "mkv", "webm", "avi", "mov", "flv", "wmv", "m4v"];
+const AUDIO_EXTENSIONS = ["mp3", "wav"];
+const MEDIA_EXTENSIONS = [...VIDEO_EXTENSIONS, ...AUDIO_EXTENSIONS];
 
-function isVideoFile(path: string): boolean {
-  const ext = path.split(".").pop()?.toLowerCase();
-  return !!ext && VIDEO_EXTENSIONS.includes(ext);
+type MediaKind = "video" | "audio";
+
+function getExtension(path: string): string | undefined {
+  return path.split(".").pop()?.toLowerCase();
+}
+
+function isMediaFile(path: string): boolean {
+  const ext = getExtension(path);
+  return !!ext && MEDIA_EXTENSIONS.includes(ext);
+}
+
+function getMediaKind(path: string): MediaKind | null {
+  const ext = getExtension(path);
+  if (!ext) return null;
+  if (AUDIO_EXTENSIONS.includes(ext)) return "audio";
+  if (VIDEO_EXTENSIONS.includes(ext)) return "video";
+  return null;
 }
 
 let markerIdCounter = 0;
@@ -50,8 +66,9 @@ function createMarkerId(): string {
 
 export function VideoSplitterPanel() {
   const [ffmpegReady, setFfmpegReady] = useState<boolean | null>(null);
-  const [videoPath, setVideoPath] = useState<string | null>(null);
-  const [videoName, setVideoName] = useState("");
+  const [mediaPath, setMediaPath] = useState<string | null>(null);
+  const [mediaName, setMediaName] = useState("");
+  const [mediaKind, setMediaKind] = useState<MediaKind | null>(null);
   const [previewSrc, setPreviewSrc] = useState<string | null>(null);
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
@@ -67,7 +84,7 @@ export function VideoSplitterPanel() {
     new Set(),
   );
 
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const mediaRef = useRef<HTMLMediaElement>(null);
   const dropZoneRef = useRef<HTMLDivElement>(null);
   const tauriEnv = isTauri();
 
@@ -79,7 +96,7 @@ export function VideoSplitterPanel() {
       .catch(() => setFfmpegReady(false));
   }, [tauriEnv]);
 
-  const resetVideoState = useCallback(() => {
+  const resetMediaState = useCallback(() => {
     setDuration(0);
     setCurrentTime(0);
     setIsPlaying(false);
@@ -89,28 +106,30 @@ export function VideoSplitterPanel() {
     setExportProgress("");
   }, []);
 
-  const loadVideo = useCallback(
+  const loadMedia = useCallback(
     (selected: string) => {
       if (markers.length > 0) {
-        toast.error("存在标记时无法更换视频，请先删除所有标记");
+        toast.error("存在标记时无法更换文件，请先删除所有标记");
         return;
       }
 
-      if (!isVideoFile(selected)) {
-        toast.error("请选择支持的视频文件");
+      const kind = getMediaKind(selected);
+      if (!kind || !isMediaFile(selected)) {
+        toast.error("请选择支持的媒体文件");
         return;
       }
 
       const fileName = selected.split(/[/\\]/).pop() ?? selected;
-      resetVideoState();
-      setVideoPath(selected);
-      setVideoName(fileName);
+      resetMediaState();
+      setMediaPath(selected);
+      setMediaName(fileName);
+      setMediaKind(kind);
       setPreviewSrc(convertFileSrc(selected));
     },
-    [markers.length, resetVideoState],
+    [markers.length, resetMediaState],
   );
 
-  const handleSelectVideo = useCallback(async () => {
+  const handleSelectMedia = useCallback(async () => {
     if (!tauriEnv) {
       toast.error("请在桌面应用中运行此工具");
       return;
@@ -121,16 +140,16 @@ export function VideoSplitterPanel() {
       directory: false,
       filters: [
         {
-          name: "视频文件",
-          extensions: VIDEO_EXTENSIONS,
+          name: "媒体文件",
+          extensions: MEDIA_EXTENSIONS,
         },
       ],
     });
 
     if (!selected || Array.isArray(selected)) return;
 
-    loadVideo(selected);
-  }, [loadVideo, tauriEnv]);
+    loadMedia(selected);
+  }, [loadMedia, tauriEnv]);
 
   useEffect(() => {
     if (!tauriEnv || exporting || markers.length > 0) return;
@@ -158,13 +177,13 @@ export function VideoSplitterPanel() {
         if (payload.type !== "drop") return;
         if (!isPointInDropZone(payload.position.x, payload.position.y)) return;
 
-        const droppedVideo = payload.paths.find(isVideoFile);
-        if (!droppedVideo) {
-          toast.error("请拖入支持的视频文件");
+        const droppedMedia = payload.paths.find(isMediaFile);
+        if (!droppedMedia) {
+          toast.error("请拖入支持的媒体文件");
           return;
         }
 
-        loadVideo(droppedVideo);
+        loadMedia(droppedMedia);
       })
       .then((fn) => {
         if (cancelled) fn();
@@ -176,7 +195,7 @@ export function VideoSplitterPanel() {
       unlisten?.();
       setIsDragOver(false);
     };
-  }, [exporting, loadVideo, markers.length, tauriEnv]);
+  }, [exporting, loadMedia, markers.length, tauriEnv]);
 
   const sortedMarkers = useMemo(
     () => [...markers].sort((a, b) => a.seconds - b.seconds),
@@ -189,70 +208,70 @@ export function VideoSplitterPanel() {
   );
 
   const { baseName, ext } = useMemo(
-    () => splitBaseNameAndExt(videoName),
-    [videoName],
+    () => splitBaseNameAndExt(mediaName),
+    [mediaName],
   );
 
   const canExport =
     tauriEnv &&
     ffmpegReady === true &&
-    !!videoPath &&
+    !!mediaPath &&
     markers.length > 0 &&
     invalidMarkerIds.size === 0 &&
     segments.length > 0 &&
     !exporting;
 
   const handleLoadedMetadata = () => {
-    const video = videoRef.current;
-    if (!video || !Number.isFinite(video.duration) || video.duration <= 0) {
-      toast.error("无法读取视频时长");
+    const media = mediaRef.current;
+    if (!media || !Number.isFinite(media.duration) || media.duration <= 0) {
+      toast.error("无法读取媒体时长");
       return;
     }
-    setDuration(video.duration);
+    setDuration(media.duration);
   };
 
   const handleTimeUpdate = () => {
-    const video = videoRef.current;
-    if (!video) return;
-    setCurrentTime(video.currentTime);
+    const media = mediaRef.current;
+    if (!media) return;
+    setCurrentTime(media.currentTime);
   };
 
   const togglePlayback = async () => {
-    const video = videoRef.current;
-    if (!video) return;
+    const media = mediaRef.current;
+    if (!media) return;
 
-    if (video.paused) {
+    if (media.paused) {
       try {
-        await video.play();
+        await media.play();
         setIsPlaying(true);
       } catch {
-        toast.error("无法播放视频");
+        toast.error("无法播放媒体");
       }
     } else {
-      video.pause();
+      media.pause();
       setIsPlaying(false);
     }
   };
 
   const seekTo = (seconds: number) => {
-    const video = videoRef.current;
-    if (!video) return;
-    video.currentTime = seconds;
+    const media = mediaRef.current;
+    if (!media) return;
+    media.currentTime = seconds;
     setCurrentTime(seconds);
   };
 
   const seekBy = (deltaSeconds: number) => {
-    const video = videoRef.current;
-    if (!video) return;
-    const maxTime = duration > 0 ? duration : video.duration;
-    const next = Math.min(Math.max(0, video.currentTime + deltaSeconds), maxTime || 0);
+    const media = mediaRef.current;
+    if (!media) return;
+    const maxTime = duration > 0 ? duration : media.duration;
+    const next = Math.min(Math.max(0, media.currentTime + deltaSeconds), maxTime || 0);
     seekTo(next);
   };
 
   const addMarker = () => {
-    if (!videoRef.current || duration <= 0) return;
+    if (!mediaRef.current || duration <= 0) return;
 
-    const seconds = videoRef.current.currentTime;
+    const seconds = mediaRef.current.currentTime;
     if (!isValidMarker(seconds, duration)) return;
     if (isDuplicateMarker(markers.map((marker) => marker.seconds), seconds)) return;
 
@@ -336,7 +355,7 @@ export function VideoSplitterPanel() {
   };
 
   const handleConfirmExport = async () => {
-    if (!videoPath || !tauriEnv) return;
+    if (!mediaPath || !tauriEnv) return;
     if (selectedSegmentIndices.size === 0) {
       toast.error("请至少选择一个片段");
       return;
@@ -362,7 +381,7 @@ export function VideoSplitterPanel() {
 
     try {
       const written = await invoke<string[]>("split_video", {
-        inputPath: videoPath,
+        inputPath: mediaPath,
         outputDir,
         segments: payload,
       });
@@ -402,23 +421,23 @@ export function VideoSplitterPanel() {
         <CardHeader>
           <CardTitle>视频分割</CardTitle>
           <CardDescription>
-            选择视频并标记切割点，点击「开始分割」勾选要导出的片段后选择输出目录。采用重编码以实现精确切割，耗时较流复制更长。
+            选择视频或音频（mp3/wav）并标记切割点，点击「开始分割」勾选要导出的片段后选择输出目录。采用重编码以实现精确切割，耗时较流复制更长。
           </CardDescription>
         </CardHeader>
 
         <CardContent className="flex flex-1 flex-col gap-4">
           <div className="flex flex-wrap items-center gap-2">
             <Button
-              onClick={handleSelectVideo}
+              onClick={handleSelectMedia}
               disabled={!tauriEnv || exporting || markers.length > 0}
-              title={markers.length > 0 ? "请先删除所有标记后再更换视频" : undefined}
+              title={markers.length > 0 ? "请先删除所有标记后再更换文件" : undefined}
             >
               <Video />
-              选择视频
+              选择文件
             </Button>
-            {videoName && (
-              <span className="truncate text-sm text-muted-foreground" title={videoName}>
-                {videoName}
+            {mediaName && (
+              <span className="truncate text-sm text-muted-foreground" title={mediaName}>
+                {mediaName}
               </span>
             )}
           </div>
@@ -433,12 +452,14 @@ export function VideoSplitterPanel() {
             >
               {isDragOver && (
                 <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center rounded-md bg-primary/10">
-                  <span className="text-sm font-medium text-primary">释放以加载视频</span>
+                  <span className="text-sm font-medium text-primary">释放以加载媒体</span>
                 </div>
               )}
-              {previewSrc ? (
+              {previewSrc && mediaKind === "video" ? (
                 <video
-                  ref={videoRef}
+                  ref={(el) => {
+                    mediaRef.current = el;
+                  }}
                   src={previewSrc}
                   className="max-h-105 w-full rounded-md bg-black object-contain"
                   controls={true}
@@ -448,10 +469,26 @@ export function VideoSplitterPanel() {
                   onPause={() => setIsPlaying(false)}
                   onEnded={() => setIsPlaying(false)}
                 />
+              ) : previewSrc && mediaKind === "audio" ? (
+                <div className="flex flex-1 flex-col items-center justify-center gap-4 py-8">
+                  <audio
+                    ref={(el) => {
+                      mediaRef.current = el;
+                    }}
+                    src={previewSrc}
+                    className="w-full"
+                    controls={true}
+                    onLoadedMetadata={handleLoadedMetadata}
+                    onTimeUpdate={handleTimeUpdate}
+                    onPlay={() => setIsPlaying(true)}
+                    onPause={() => setIsPlaying(false)}
+                    onEnded={() => setIsPlaying(false)}
+                  />
+                </div>
               ) : (
                 <div className="flex flex-1 flex-col items-center justify-center gap-2 text-muted-foreground">
                   <Video className="size-10 opacity-50" />
-                  <span>请选择或拖入视频文件</span>
+                  <span>请选择或拖入媒体文件</span>
                 </div>
               )}
 

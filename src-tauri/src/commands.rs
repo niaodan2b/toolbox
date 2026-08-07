@@ -133,6 +133,14 @@ pub fn check_ffmpeg() -> Result<String, String> {
     run_ffmpeg_version(&ffmpeg)
 }
 
+fn audio_codec_for_ext(ext: &str) -> Option<&'static str> {
+    match ext {
+        "mp3" => Some("libmp3lame"),
+        "wav" => Some("pcm_s16le"),
+        _ => None,
+    }
+}
+
 #[tauri::command]
 pub async fn split_video(
     input_path: String,
@@ -153,6 +161,13 @@ pub async fn split_video(
         return Err(format!("输出目录不存在: {output_dir}"));
     }
 
+    let input_ext = input
+        .extension()
+        .and_then(|ext| ext.to_str())
+        .map(|ext| ext.to_ascii_lowercase())
+        .unwrap_or_default();
+    let audio_codec = audio_codec_for_ext(&input_ext);
+
     let ffmpeg = resolve_ffmpeg()?;
     let mut written: Vec<String> = Vec::with_capacity(segments.len());
 
@@ -167,18 +182,30 @@ pub async fn split_video(
         }
 
         let output_path = output.join(&segment.filename);
+        let start_ts = format_timestamp(segment.start);
+        let end_ts = format_timestamp(segment.end);
+        let output_path_str = output_path.to_string_lossy().into_owned();
 
         // -ss 放在 -i 之后并重新编码，可在任意帧精确切割；
         // -c copy 只能在关键帧切割，通常会有数秒误差。
-        let result = new_ffmpeg_command(&ffmpeg)
-            .args([
-                "-y",
-                "-i",
-                &input_path,
-                "-ss",
-                &format_timestamp(segment.start),
-                "-to",
-                &format_timestamp(segment.end),
+        let mut args: Vec<&str> = vec![
+            "-y",
+            "-i",
+            &input_path,
+            "-ss",
+            &start_ts,
+            "-to",
+            &end_ts,
+        ];
+
+        if let Some(codec) = audio_codec {
+            args.extend_from_slice(&["-vn", "-c:a", codec]);
+            if codec == "libmp3lame" {
+                args.extend_from_slice(&["-b:a", "192k"]);
+            }
+            args.extend_from_slice(&["-avoid_negative_ts", "make_zero", &output_path_str]);
+        } else {
+            args.extend_from_slice(&[
                 "-c:v",
                 "libx264",
                 "-preset",
@@ -193,8 +220,12 @@ pub async fn split_video(
                 "+faststart",
                 "-avoid_negative_ts",
                 "make_zero",
-                output_path.to_string_lossy().as_ref(),
-            ])
+                &output_path_str,
+            ]);
+        }
+
+        let result = new_ffmpeg_command(&ffmpeg)
+            .args(&args)
             .output()
             .map_err(|e| format!("执行 ffmpeg 失败: {e}"))?;
 
@@ -213,7 +244,7 @@ pub async fn split_video(
             ));
         }
 
-        written.push(output_path.to_string_lossy().to_string());
+        written.push(output_path_str);
     }
 
     Ok(written)
