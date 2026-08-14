@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { Check, ChevronDown, ChevronUp, ClipboardCopy, Eraser } from "lucide-react";
+import { Check, ChevronDown, ChevronUp, ClipboardCopy } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import charPinyinData from "@/datasets/char_pinyin.json";
+import charWordsData from "@/datasets/char_words.json";
 import rhymeGroupsData from "@/datasets/rhyme-groups.json";
 
 interface CharEntry {
@@ -26,12 +27,16 @@ interface RhymeGroup {
 
 const data = charPinyinData as CharEntry[];
 const rhymeGroups = rhymeGroupsData as RhymeGroup[];
+const charWords = charWordsData as Record<string, string[]>;
 
 export function RhymeFinderPanel() {
-  const [selected, setSelected] = useState<Set<string>>(new Set());
-  const [pickedChars, setPickedChars] = useState<Set<string>>(new Set());
+  const [selected, setSelected] = useState<string | null>(null);
+  const [pickedWords, setPickedWords] = useState<string[]>([]);
+  const [activeChar, setActiveChar] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const [rhymeCollapsed, setRhymeCollapsed] = useState(false);
+
+  const pickedSet = useMemo(() => new Set(pickedWords), [pickedWords]);
 
   // 每个韵部对应的字数统计
   const { allGroups, counts } = useMemo(() => {
@@ -51,50 +56,34 @@ export function RhymeFinderPanel() {
     return { allGroups: rhymeGroups.map((g) => g.label), counts: map };
   }, []);
 
-  // 根据所选韵部过滤汉字（OR 关系：任一韵部命中即可）
   const filtered = useMemo(() => {
-    if (selected.size === 0) return [] as CharEntry[];
-    // 汇总所有选中韵部的拼音到一个 Set
-    const pinyinPool = new Set<string>();
-    for (const group of rhymeGroups) {
-      if (selected.has(group.label)) {
-        for (const p of group.pinyin) {
-          pinyinPool.add(p);
-        }
-      }
-    }
+    if (!selected) return [] as CharEntry[];
+    const group = rhymeGroups.find((g) => g.label === selected);
+    if (!group) return [] as CharEntry[];
+    const pinyinPool = new Set(group.pinyin);
     return data.filter((e) => e.pinyin_plain.some((p) => pinyinPool.has(p)));
   }, [selected]);
 
-  const toggle = (label: string) => {
-    setSelected((prev) => {
-      const next = new Set(prev);
-      if (next.has(label)) next.delete(label);
-      else next.add(label);
-      return next;
-    });
-    setPickedChars(new Set());
+  const dialogWords = activeChar
+    ? [activeChar, ...(charWords[activeChar] ?? [])]
+    : [];
+
+  const selectGroup = (label: string) => {
+    setSelected((prev) => (prev === label ? null : label));
+    setPickedWords([]);
+    setActiveChar(null);
   };
 
-  const clear = () => { setSelected(new Set()); setPickedChars(new Set()); };
-
-  const toggleChar = (char: string) => {
-    setPickedChars((prev) => {
-      const next = new Set(prev);
-      if (next.has(char)) next.delete(char);
-      else next.add(char);
-      return next;
+  const toggleWord = (word: string) => {
+    setPickedWords((prev) => {
+      if (prev.includes(word)) return prev.filter((w) => w !== word);
+      return [...prev, word];
     });
   };
 
   const copyPicked = () => {
-    if (pickedChars.size === 0) return;
-    // 按 filtered 顺序输出，保持原始排列
-    const str = filtered
-      .filter((e) => pickedChars.has(e.char))
-      .map((e) => e.char)
-      .join(" ");
-    navigator.clipboard.writeText(str).then(() => {
+    if (pickedWords.length === 0) return;
+    navigator.clipboard.writeText(pickedWords.join(" ")).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
     });
@@ -115,34 +104,28 @@ export function RhymeFinderPanel() {
             "flex w-full shrink-0 flex-col gap-1.5 border-b pb-3 sm:gap-2 sm:pb-4 md:w-64 md:border-b-0 md:border-r md:pr-4 md:pb-0",
             rhymeCollapsed && "pb-1 sm:pb-2"
           )}>
-            <div className="flex items-center justify-between">
-              <button
-                type="button"
-                onClick={() => setRhymeCollapsed((v) => !v)}
-                className="flex items-center gap-1 text-[11px] sm:text-xs text-muted-foreground md:pointer-events-none"
-              >
-                {rhymeCollapsed
-                  ? <ChevronDown className="size-3.5 md:hidden" />
-                  : <ChevronUp className="size-3.5 md:hidden" />}
-                <span>已选 {selected.size} / {allGroups.length} 个韵部</span>
-              </button>
-              <Button size="sm" variant="ghost" onClick={clear} disabled={selected.size === 0} className="h-7 px-2 text-xs sm:h-8 sm:px-3 sm:text-sm">
-                <Eraser className="size-3.5 sm:size-4" />
-                清空
-              </Button>
-            </div>
+            <button
+              type="button"
+              onClick={() => setRhymeCollapsed((v) => !v)}
+              className="flex items-center gap-1 text-[11px] sm:text-xs text-muted-foreground md:pointer-events-none"
+            >
+              {rhymeCollapsed
+                ? <ChevronDown className="size-3.5 md:hidden" />
+                : <ChevronUp className="size-3.5 md:hidden" />}
+              <span>韵部</span>
+            </button>
             <div className={cn(
               "max-h-36 flex-1 overflow-y-auto pr-1 sm:max-h-48 md:max-h-none",
               rhymeCollapsed && "hidden md:block"
             )}>
               <div className="grid grid-cols-3 gap-1 sm:gap-1.5">
                 {allGroups.map((label) => {
-                  const active = selected.has(label);
+                  const active = selected === label;
                   return (
                     <button
                       key={label}
                       type="button"
-                      onClick={() => toggle(label)}
+                      onClick={() => selectGroup(label)}
                       className={cn(
                         "flex items-center justify-between gap-0.5 rounded-md border py-1 px-1.5 text-xs sm:gap-1 sm:py-1.5 sm:px-2 sm:text-sm transition-colors",
                         active
@@ -170,16 +153,16 @@ export function RhymeFinderPanel() {
           <section className="flex min-h-0 min-w-0 flex-1 flex-col gap-1.5 sm:gap-2">
             <div className="flex items-center justify-between gap-2">
               <div className="text-xs sm:text-sm text-muted-foreground">
-                {selected.size === 0
+                {!selected
                   ? "请先选择韵部"
-                  : pickedChars.size > 0
-                  ? `已选 ${pickedChars.size} 字 / 共 ${filtered.length} 字`
-                  : `${filtered.length} 字，点击选中`}
+                  : pickedWords.length > 0
+                  ? `已选 ${pickedWords.length} 词 / 共 ${filtered.length} 字`
+                  : `${filtered.length} 字，点击选词`}
               </div>
               <Button
                 size="sm"
                 variant="outline"
-                disabled={pickedChars.size === 0}
+                disabled={pickedWords.length === 0}
                 onClick={copyPicked}
                 className="shrink-0 h-7 px-2 text-xs sm:h-8 sm:px-3 sm:text-sm"
               >
@@ -195,29 +178,21 @@ export function RhymeFinderPanel() {
               ) : (
                 <div className="flex flex-wrap gap-1 sm:gap-2">
                   {filtered.map((e) => {
-                    const isPicked = pickedChars.has(e.char);
+                    const isPicked = pickedWords.some((w) => w.endsWith(e.char));
                     return (
                       <button
                         key={e.char}
                         type="button"
                         title={e.pinyin.join(" / ")}
-                        onClick={() => toggleChar(e.char)}
+                        onClick={() => setActiveChar(e.char)}
                         className={cn(
-                          "flex min-w-[2.5rem] sm:min-w-[3rem] flex-col items-center rounded-md border px-1.5 py-0.5 sm:px-2 sm:py-1 text-center transition-colors",
+                          "flex min-w-[2rem] sm:min-w-[2.25rem] items-center justify-center rounded-md border px-1.5 py-0.5 sm:px-2 sm:py-1 text-center transition-colors",
                           isPicked
                             ? "border-primary bg-primary text-primary-foreground"
                             : "bg-card hover:bg-accent hover:text-accent-foreground",
                         )}
                       >
                         <span className="text-base sm:text-lg leading-tight">{e.char}</span>
-                        <span
-                          className={cn(
-                            "hidden sm:inline font-mono text-[9px] sm:text-[10px]",
-                            isPicked ? "opacity-80" : "text-muted-foreground",
-                          )}
-                        >
-                          {e.pinyin.join("/")}
-                        </span>
                       </button>
                     );
                   })}
@@ -227,6 +202,49 @@ export function RhymeFinderPanel() {
           </section>
         </CardContent>
       </Card>
+
+      {activeChar && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+          onClick={() => setActiveChar(null)}
+        >
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="word-picker-title"
+            className="flex max-h-[min(80vh,640px)] w-full max-w-sm flex-col rounded-xl border bg-card shadow-lg"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="border-b px-4 py-3">
+              <h2 id="word-picker-title" className="text-lg font-semibold leading-none">
+                {activeChar}
+              </h2>
+            </div>
+            <div className="flex-1 overflow-y-auto p-3">
+              <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                {dialogWords.map((word) => {
+                  const isPicked = pickedSet.has(word);
+                  return (
+                    <button
+                      key={word}
+                      type="button"
+                      onClick={() => toggleWord(word)}
+                      className={cn(
+                        "flex min-w-[2rem] items-center justify-center rounded-md border px-2 py-1 text-center transition-colors",
+                        isPicked
+                          ? "border-primary bg-primary text-primary-foreground"
+                          : "bg-card hover:bg-accent hover:text-accent-foreground",
+                      )}
+                    >
+                      <span className="text-base sm:text-lg leading-tight">{word}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

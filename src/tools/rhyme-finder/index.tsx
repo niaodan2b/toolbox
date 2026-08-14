@@ -5,7 +5,7 @@ import { RhymeFinderPanel } from "./RhymeFinderPanel";
 const rhymeFinderTool: ToolModule = {
   id: "rhyme-finder",
   name: "查韵",
-  description: "按韵部分组查找常用汉字，支持多选",
+  description: "按韵部分组查找常用汉字",
   category: "文本",
   icon: Music2,
   component: RhymeFinderPanel,
