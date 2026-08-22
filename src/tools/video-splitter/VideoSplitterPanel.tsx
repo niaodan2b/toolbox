@@ -522,6 +522,15 @@ export function VideoSplitterPanel() {
                       -5s
                     </Button>
                     <Button
+                      size="sm"
+                      variant="secondary"
+                      onClick={() => seekBy(-0.1)}
+                      aria-label="快退 0.1 秒"
+                      title="快退 0.1 秒"
+                    >
+                      -0.1s
+                    </Button>
+                    <Button
                       size="icon"
                       variant="secondary"
                       onClick={togglePlayback}
@@ -529,6 +538,15 @@ export function VideoSplitterPanel() {
                       title={isPlaying ? "暂停" : "播放"}
                     >
                       {isPlaying ? <Pause /> : <Play />}
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="secondary"
+                      onClick={() => seekBy(0.1)}
+                      aria-label="快进 0.1 秒"
+                      title="快进 0.1 秒"
+                    >
+                      +0.1s
                     </Button>
                     <Button
                       size="sm"
