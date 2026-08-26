@@ -1,0 +1,173 @@
+name: release
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  # ---- Desktop (Windows + macOS) via tauri-action ---------------------------
+  build-desktop:
+    name: build / ${{ matrix.platform }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: macos-latest
+            # Apple Silicon only (macos-latest is arm64). Just the .app bundle, no .dmg.
+            args: '--target aarch64-apple-darwin --bundles app'
+            rust-targets: 'aarch64-apple-darwin'
+          - platform: windows-latest
+            args: '--bundles msi'
+            rust-targets: ''
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: install dependencies (ubuntu only)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libayatana-appindicator3-dev librsvg2-dev patchelf
+
+      - name: setup bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: install frontend dependencies
+        run: bun install --frozen-lockfile
+
+      - name: install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.rust-targets }}
+
+      - name: Rust cache
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: './src-tauri -> target'
+
+      - name: build and publish with tauri-action
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+        with:
+          tagName: ${{ github.ref_name }}
+          releaseName: 'toolbox ${{ github.ref_name }}'
+          releaseBody: |
+            ## toolbox ${{ github.ref_name }}
+
+            ### Downloads
+            - **Windows**: `toolbox_*_x64_en-US.msi` — MSI installer
+            - **macOS**: `toolbox_*_aarch64.app.tar.gz` — Apple Silicon app. Extract and move `Toolbox.app` to `/Applications`. Since the app is not notarized, the first time you open it right-click → *Open* to bypass Gatekeeper.
+            - **Android**: `toolbox-*-arm64-v8a.apk` — sideload the APK on a 64-bit ARM device
+
+            See the assets below to download and install this version.
+          releaseDraft: false
+          prerelease: false
+          args: ${{ matrix.args }}
+
+  # ---- Android (APK) -------------------------------------------------------
+  build-android:
+    name: build / android (apk)
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: setup bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: install frontend dependencies
+        run: bun install --frozen-lockfile
+
+      - name: install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-linux-android
+
+      - name: Rust cache
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: './src-tauri -> target'
+
+      - name: setup JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: setup Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          packages: 'tools platform-tools build-tools;36.0.0 platforms;android-36'
+
+      - name: setup Android NDK
+        run: |
+          # yes dies with SIGPIPE (141) once sdkmanager stops reading stdin; GH Actions bash runs with -o pipefail, which would fail the step
+          set +o pipefail
+          yes | sdkmanager "ndk;28.1.13356709"
+          set -o pipefail
+          NDK_DIR="$ANDROID_HOME/ndk/28.1.13356709"
+          test -f "$NDK_DIR/source.properties"
+          echo "NDK_HOME=$NDK_DIR" >> "$GITHUB_ENV"
+          echo "ANDROID_NDK_HOME=$NDK_DIR" >> "$GITHUB_ENV"
+          echo "ANDROID_NDK_ROOT=$NDK_DIR" >> "$GITHUB_ENV"
+
+      - name: setup Android release signing
+        run: |
+          cd src-tauri/gen/android
+          echo "keyAlias=${{ secrets.ANDROID_KEY_ALIAS }}" > keystore.properties
+          echo "password=${{ secrets.ANDROID_KEY_PASSWORD }}" >> keystore.properties
+          base64 -d <<< "${{ secrets.ANDROID_KEY_BASE64 }}" > "$RUNNER_TEMP/keystore.jks"
+          echo "storeFile=$RUNNER_TEMP/keystore.jks" >> keystore.properties
+
+      - name: build Android APK
+        run: bun run tauri android build --apk --split-per-abi --target aarch64 --ci
+
+      - name: collect APKs
+        id: apks
+        run: |
+          mkdir -p artifacts
+          find src-tauri/gen/android/app/build/outputs/apk -type f -name "*.apk" -print0 \
+            | xargs -0 -I{} cp {} artifacts/
+          echo "count=$(find artifacts -name '*.apk' | wc -l | tr -d ' ')" >> "$GITHUB_OUTPUT"
+          ls -la artifacts
+
+      - name: rename APKs for clarity
+        run: |
+          cd artifacts
+          for f in *.apk; do
+            mv "$f" "toolbox-${GITHUB_REF_NAME}-${f}"
+          done
+          ls -la
+
+      - name: wait for the GitHub release to exist
+        if: steps.apks.outputs.count != '0'
+        run: |
+          for i in $(seq 1 30); do
+            if gh release view "${GITHUB_REF_NAME}" >/dev/null 2>&1; then
+              echo "Release ${GITHUB_REF_NAME} is available"
+              exit 0
+            fi
+            echo "Release not ready yet, retrying in 10s (attempt $i/30)..."
+            sleep 10
+          done
+          echo "Release ${GITHUB_REF_NAME} did not appear in time" >&2
+          exit 1
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: upload APKs to the release
+        if: steps.apks.outputs.count != '0'
+        run: gh release upload "${GITHUB_REF_NAME}" artifacts/*.apk --clobber
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

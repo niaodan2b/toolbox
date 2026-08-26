@@ -1,5 +1,5 @@
 import { useMemo, useState, type CSSProperties } from "react";
-import { Search, Wrench } from "lucide-react";
+import { Loader2, Search, Wrench } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { tools } from "@/tools/registry";
@@ -14,6 +14,8 @@ interface SidebarProps {
   className?: string;
   /** 额外内联样式（例如安全区域内边距） */
   style?: CSSProperties;
+  appVersion?: string;
+  checkingUpdate?: boolean;
 }
 
 function matchTool(tool: ToolModule, query: string): boolean {
@@ -32,6 +34,8 @@ export function Sidebar({
   onAfterSelect,
   className,
   style,
+  appVersion,
+  checkingUpdate,
 }: SidebarProps) {
   const [query, setQuery] = useState("");
 
@@ -57,6 +61,12 @@ export function Sidebar({
       <div className="flex h-14 shrink-0 items-center gap-2 border-b px-4">
         <Wrench className="size-5" />
         <span className="text-base font-semibold">工具箱</span>
+        {appVersion ? (
+          <span className="text-[11px] tabular-nums leading-none text-muted-foreground">
+            {appVersion}
+          </span>
+        ) : null}
+        {checkingUpdate ? <Loader2 className="size-3 animate-spin text-muted-foreground" /> : null}
       </div>
 
       <div className="p-3">

@@ -1,19 +1,74 @@
-import { useState } from "react";
-import { Menu, Wrench } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Download, Menu, Wrench, X } from "lucide-react";
+import type { Update } from "@tauri-apps/plugin-updater";
 
 import { useActiveTool } from "@/hooks/useActiveTool";
 import { Sidebar } from "@/layout/Sidebar";
 import { ToolHost } from "@/layout/ToolHost";
 import { Toaster } from "@/components/ui/sonner";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { Progress } from "@/components/ui/progress";
 import { findTool } from "@/tools/registry";
 import { cn } from "@/lib/utils";
+import {
+  checkAppUpdate,
+  getAppVersion,
+  installAppUpdate,
+  isTauri,
+  updateProgressLabel,
+  updateProgressValue,
+  type UpdateProgress,
+} from "@/lib/updater";
 
 function App() {
   const { activeId, setActive } = useActiveTool();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const activeTool = findTool(activeId);
+  const [pendingUpdate, setPendingUpdate] = useState<Update | null>(null);
+  const [updating, setUpdating] = useState(false);
+  const [updateProgress, setUpdateProgress] = useState<UpdateProgress | null>(null);
+  const [appVersion, setAppVersion] = useState("");
+  const [checkingUpdate, setCheckingUpdate] = useState(isTauri);
 
   const closeDrawer = () => setDrawerOpen(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    void (async () => {
+      const version = await getAppVersion();
+      if (!cancelled) setAppVersion(version);
+      try {
+        const update = await checkAppUpdate();
+        if (!cancelled && update) setPendingUpdate(update);
+      } finally {
+        if (!cancelled) setCheckingUpdate(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const handleInstallUpdate = async () => {
+    if (!pendingUpdate) return;
+    setUpdating(true);
+    setUpdateProgress({ downloaded: 0, status: "downloading" });
+    try {
+      await installAppUpdate(pendingUpdate, setUpdateProgress);
+    } catch {
+      setUpdating(false);
+      setUpdateProgress(null);
+    }
+  };
 
   return (
     <div className="flex h-screen w-screen flex-col overflow-hidden md:flex-row">
@@ -46,6 +101,8 @@ function App() {
         activeId={activeId}
         onSelect={setActive}
         onAfterSelect={closeDrawer}
+        appVersion={appVersion}
+        checkingUpdate={checkingUpdate}
         style={{
           paddingTop: "env(safe-area-inset-top)",
           paddingBottom: "env(safe-area-inset-bottom)",
@@ -71,6 +128,46 @@ function App() {
         <ToolHost activeId={activeId} onSelect={setActive} />
       </main>
       <Toaster position="top-right" />
+
+      <AlertDialog
+        open={!!pendingUpdate}
+        onOpenChange={(open) => {
+          if (!open && !updating) {
+            setPendingUpdate(null);
+            setUpdateProgress(null);
+          }
+        }}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>{pendingUpdate?.version}</AlertDialogTitle>
+          </AlertDialogHeader>
+          {updating ? (
+            <div className="grid gap-2">
+              <Progress value={updateProgressValue(updateProgress) ?? 0} />
+              <AlertDialogDescription className="tabular-nums">
+                {updateProgressLabel(updateProgress ?? { downloaded: 0, status: "downloading" })}
+              </AlertDialogDescription>
+            </div>
+          ) : null}
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={updating}>
+              <X />
+              取消
+            </AlertDialogCancel>
+            <AlertDialogAction
+              disabled={updating}
+              onClick={(e) => {
+                e.preventDefault();
+                void handleInstallUpdate();
+              }}
+            >
+              <Download />
+              更新
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
