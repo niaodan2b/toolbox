@@ -123,12 +123,16 @@ jobs:
           echo "ANDROID_NDK_ROOT=$NDK_DIR" >> "$GITHUB_ENV"
 
       - name: setup Android release signing
+        env:
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          ANDROID_KEY_BASE64: ${{ secrets.ANDROID_KEY_BASE64 }}
         run: |
           cd src-tauri/gen/android
-          echo "keyAlias=${{ secrets.ANDROID_KEY_ALIAS }}" > keystore.properties
-          echo "password=${{ secrets.ANDROID_KEY_PASSWORD }}" >> keystore.properties
-          base64 -d <<< "${{ secrets.ANDROID_KEY_BASE64 }}" > "$RUNNER_TEMP/keystore.jks"
-          echo "storeFile=$RUNNER_TEMP/keystore.jks" >> keystore.properties
+          printf 'keyAlias=%s\n' "$ANDROID_KEY_ALIAS" > keystore.properties
+          printf 'password=%s\n' "$ANDROID_KEY_PASSWORD" >> keystore.properties
+          printf '%s' "$ANDROID_KEY_BASE64" | tr -d '\n\r' | base64 -d > "$RUNNER_TEMP/keystore.jks"
+          printf 'storeFile=%s\n' "$RUNNER_TEMP/keystore.jks" >> keystore.properties
 
       - name: build Android APK
         run: bun run tauri android build --apk --split-per-abi --target aarch64 --ci
