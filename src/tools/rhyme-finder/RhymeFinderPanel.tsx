@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Check, ChevronDown, ChevronUp, ClipboardCopy } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -67,6 +67,22 @@ export function RhymeFinderPanel() {
   const dialogWords = activeChar
     ? [activeChar, ...(charWords[activeChar] ?? [])]
     : [];
+
+  const activeIndex = activeChar
+    ? filtered.findIndex((e) => e.char === activeChar)
+    : -1;
+
+  useEffect(() => {
+    if (!activeChar) return;
+    document
+      .getElementById(`rhyme-char-${activeChar}`)
+      ?.scrollIntoView({ block: "nearest" });
+  }, [activeChar]);
+
+  const goToAdjacent = (delta: number) => {
+    const entry = filtered[activeIndex + delta];
+    if (entry) setActiveChar(entry.char);
+  };
 
   const selectGroup = (label: string) => {
     setSelected((prev) => (prev === label ? null : label));
@@ -179,9 +195,11 @@ export function RhymeFinderPanel() {
                 <div className="flex flex-wrap gap-1 sm:gap-2">
                   {filtered.map((e) => {
                     const isPicked = pickedWords.some((w) => w.endsWith(e.char));
+                    const isActive = e.char === activeChar;
                     return (
                       <button
                         key={e.char}
+                        id={`rhyme-char-${e.char}`}
                         type="button"
                         title={e.pinyin.join(" / ")}
                         onClick={() => setActiveChar(e.char)}
@@ -190,6 +208,7 @@ export function RhymeFinderPanel() {
                           isPicked
                             ? "border-primary bg-primary text-primary-foreground"
                             : "bg-card hover:bg-accent hover:text-accent-foreground",
+                          isActive && "ring-2 ring-offset-2 ring-primary ring-offset-background",
                         )}
                       >
                         <span className="text-base sm:text-lg leading-tight">{e.char}</span>
@@ -215,10 +234,33 @@ export function RhymeFinderPanel() {
             className="flex max-h-[min(80vh,640px)] w-full max-w-sm flex-col rounded-xl border bg-card shadow-lg"
             onClick={(event) => event.stopPropagation()}
           >
-            <div className="border-b px-4 py-3">
+            <div className="flex items-center justify-between gap-2 border-b px-3 py-2">
+              <Button
+                size="sm"
+                variant="outline"
+                disabled={activeIndex <= 0}
+                onClick={() => goToAdjacent(-1)}
+                className="h-7 shrink-0 px-2 text-xs"
+              >
+                前一个字
+              </Button>
               <h2 id="word-picker-title" className="text-lg font-semibold leading-none">
                 {activeChar}
+                {activeIndex >= 0 && (
+                  <span className="ml-2 text-sm font-normal text-muted-foreground">
+                    {activeIndex + 1}/{filtered.length}
+                  </span>
+                )}
               </h2>
+              <Button
+                size="sm"
+                variant="outline"
+                disabled={activeIndex < 0 || activeIndex >= filtered.length - 1}
+                onClick={() => goToAdjacent(1)}
+                className="h-7 shrink-0 px-2 text-xs"
+              >
+                后一个字
+              </Button>
             </div>
             <div className="flex-1 overflow-y-auto p-3">
               <div className="flex flex-wrap gap-1.5 sm:gap-2">
