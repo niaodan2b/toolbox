@@ -224,14 +224,14 @@ export function RhymeFinderPanel() {
 
       {activeChar && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+          className="fixed inset-0 z-50 flex items-start justify-center bg-black/50 px-4 pb-4 pt-[12vh]"
           onClick={() => setActiveChar(null)}
         >
           <div
             role="dialog"
             aria-modal="true"
             aria-labelledby="word-picker-title"
-            className="flex max-h-[min(80vh,640px)] w-full max-w-sm flex-col rounded-xl border bg-card shadow-lg"
+            className="flex max-h-[min(calc(88vh-1rem),640px)] w-full max-w-sm flex-col rounded-xl border bg-card shadow-lg"
             onClick={(event) => event.stopPropagation()}
           >
             <div className="flex items-center justify-between gap-2 border-b px-3 py-2">
