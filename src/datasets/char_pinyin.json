@@ -120,6 +120,18 @@
     ]
   },
   {
+    "char": "丐",
+    "pinyin": [
+      "gài"
+    ],
+    "yunmu": [
+      "ai"
+    ],
+    "pinyin_plain": [
+      "gai"
+    ]
+  },
+  {
     "char": "丑",
     "pinyin": [
       "chǒu"
@@ -1984,6 +1996,18 @@
     ]
   },
   {
+    "char": "侃",
+    "pinyin": [
+      "kǎn"
+    ],
+    "yunmu": [
+      "an"
+    ],
+    "pinyin_plain": [
+      "kan"
+    ]
+  },
+  {
     "char": "侄",
     "pinyin": [
       "zhí"
@@ -2854,6 +2878,18 @@
     ]
   },
   {
+    "char": "兀",
+    "pinyin": [
+      "wù"
+    ],
+    "yunmu": [
+      "u"
+    ],
+    "pinyin_plain": [
+      "wu"
+    ]
+  },
+  {
     "char": "允",
     "pinyin": [
       "yǔn"
@@ -3500,6 +3536,18 @@
     ],
     "pinyin_plain": [
       "dong"
+    ]
+  },
+  {
+    "char": "冽",
+    "pinyin": [
+      "liè"
+    ],
+    "yunmu": [
+      "ie"
+    ],
+    "pinyin_plain": [
+      "lie"
     ]
   },
   {
@@ -4510,6 +4558,18 @@
     ]
   },
   {
+    "char": "劾",
+    "pinyin": [
+      "hé"
+    ],
+    "yunmu": [
+      "e"
+    ],
+    "pinyin_plain": [
+      "he"
+    ]
+  },
+  {
     "char": "势",
     "pinyin": [
       "shì"
@@ -4705,6 +4765,18 @@
     ]
   },
   {
+    "char": "匐",
+    "pinyin": [
+      "fú"
+    ],
+    "yunmu": [
+      "u"
+    ],
+    "pinyin_plain": [
+      "fu"
+    ]
+  },
+  {
     "char": "化",
     "pinyin": [
       "huà"
@@ -4836,6 +4908,18 @@
     ],
     "pinyin_plain": [
       "yi"
+    ]
+  },
+  {
+    "char": "匾",
+    "pinyin": [
+      "biǎn"
+    ],
+    "yunmu": [
+      "ian"
+    ],
+    "pinyin_plain": [
+      "bian"
     ]
   },
   {
@@ -5384,6 +5468,18 @@
     ]
   },
   {
+    "char": "厥",
+    "pinyin": [
+      "jué"
+    ],
+    "yunmu": [
+      "üe"
+    ],
+    "pinyin_plain": [
+      "jue"
+    ]
+  },
+  {
     "char": "厦",
     "pinyin": [
       "shà"
@@ -5681,6 +5777,23 @@
     ],
     "pinyin_plain": [
       "ling"
+    ]
+  },
+  {
+    "char": "叨",
+    "pinyin": [
+      "dāo",
+      "dao",
+      "tāo",
+      "dáo"
+    ],
+    "yunmu": [
+      "ao",
+      "ao"
+    ],
+    "pinyin_plain": [
+      "dao",
+      "tao"
     ]
   },
   {
@@ -6639,6 +6752,18 @@
     ]
   },
   {
+    "char": "咛",
+    "pinyin": [
+      "níng"
+    ],
+    "yunmu": [
+      "ing"
+    ],
+    "pinyin_plain": [
+      "ning"
+    ]
+  },
+  {
     "char": "咨",
     "pinyin": [
       "zī"
@@ -7237,6 +7362,18 @@
     ]
   },
   {
+    "char": "啬",
+    "pinyin": [
+      "sè"
+    ],
+    "yunmu": [
+      "e"
+    ],
+    "pinyin_plain": [
+      "se"
+    ]
+  },
+  {
     "char": "啮",
     "pinyin": [
       "niè"
@@ -7258,6 +7395,18 @@
     ],
     "pinyin_plain": [
       "xiao"
+    ]
+  },
+  {
+    "char": "啻",
+    "pinyin": [
+      "chì"
+    ],
+    "yunmu": [
+      "i"
+    ],
+    "pinyin_plain": [
+      "chi"
     ]
   },
   {
@@ -7294,6 +7443,18 @@
     ],
     "pinyin_plain": [
       "wei"
+    ]
+  },
+  {
+    "char": "喃",
+    "pinyin": [
+      "nán"
+    ],
+    "yunmu": [
+      "an"
+    ],
+    "pinyin_plain": [
+      "nan"
     ]
   },
   {
@@ -7489,6 +7650,18 @@
     ]
   },
   {
+    "char": "嗦",
+    "pinyin": [
+      "suō"
+    ],
+    "yunmu": [
+      "uo"
+    ],
+    "pinyin_plain": [
+      "suo"
+    ]
+  },
+  {
     "char": "嗽",
     "pinyin": [
       "sòu"
@@ -7634,6 +7807,19 @@
     ]
   },
   {
+    "char": "噜",
+    "pinyin": [
+      "lū",
+      "lu"
+    ],
+    "yunmu": [
+      "u"
+    ],
+    "pinyin_plain": [
+      "lu"
+    ]
+  },
+  {
     "char": "器",
     "pinyin": [
       "qì"
@@ -7679,6 +7865,18 @@
     ],
     "pinyin_plain": [
       "ga"
+    ]
+  },
+  {
+    "char": "嚅",
+    "pinyin": [
+      "rú"
+    ],
+    "yunmu": [
+      "u"
+    ],
+    "pinyin_plain": [
+      "ru"
     ]
   },
   {
@@ -7748,6 +7946,18 @@
     "char": "囊",
     "pinyin": [
       "náng"
+    ],
+    "yunmu": [
+      "ang"
+    ],
+    "pinyin_plain": [
+      "nang"
+    ]
+  },
+  {
+    "char": "囔",
+    "pinyin": [
+      "nāng"
     ],
     "yunmu": [
       "ang"
@@ -8707,6 +8917,18 @@
     ]
   },
   {
+    "char": "塾",
+    "pinyin": [
+      "shú"
+    ],
+    "yunmu": [
+      "u"
+    ],
+    "pinyin_plain": [
+      "shu"
+    ]
+  },
+  {
     "char": "境",
     "pinyin": [
       "jìng"
@@ -8824,6 +9046,18 @@
     ],
     "pinyin_plain": [
       "bi"
+    ]
+  },
+  {
+    "char": "壑",
+    "pinyin": [
+      "hè"
+    ],
+    "yunmu": [
+      "e"
+    ],
+    "pinyin_plain": [
+      "he"
     ]
   },
   {
@@ -9947,6 +10181,18 @@
     ]
   },
   {
+    "char": "婢",
+    "pinyin": [
+      "bì"
+    ],
+    "yunmu": [
+      "i"
+    ],
+    "pinyin_plain": [
+      "bi"
+    ]
+  },
+  {
     "char": "婪",
     "pinyin": [
       "lán"
@@ -10425,6 +10671,18 @@
     ],
     "pinyin_plain": [
       "hong"
+    ]
+  },
+  {
+    "char": "宕",
+    "pinyin": [
+      "dàng"
+    ],
+    "yunmu": [
+      "ang"
+    ],
+    "pinyin_plain": [
+      "dang"
     ]
   },
   {
@@ -11148,6 +11406,18 @@
     ]
   },
   {
+    "char": "尬",
+    "pinyin": [
+      "gà"
+    ],
+    "yunmu": [
+      "a"
+    ],
+    "pinyin_plain": [
+      "ga"
+    ]
+  },
+  {
     "char": "就",
     "pinyin": [
       "jiù"
@@ -11518,6 +11788,18 @@
     ],
     "pinyin_plain": [
       "cha"
+    ]
+  },
+  {
+    "char": "岖",
+    "pinyin": [
+      "qū"
+    ],
+    "yunmu": [
+      "ü"
+    ],
+    "pinyin_plain": [
+      "qu"
     ]
   },
   {
@@ -12239,6 +12521,18 @@
     ],
     "pinyin_plain": [
       "chang"
+    ]
+  },
+  {
+    "char": "帼",
+    "pinyin": [
+      "guó"
+    ],
+    "yunmu": [
+      "uo"
+    ],
+    "pinyin_plain": [
+      "guo"
     ]
   },
   {
@@ -13251,6 +13545,18 @@
     ]
   },
   {
+    "char": "徉",
+    "pinyin": [
+      "yáng"
+    ],
+    "yunmu": [
+      "iang"
+    ],
+    "pinyin_plain": [
+      "yang"
+    ]
+  },
+  {
     "char": "徊",
     "pinyin": [
       "huái"
@@ -13323,6 +13629,18 @@
     ]
   },
   {
+    "char": "徙",
+    "pinyin": [
+      "xǐ"
+    ],
+    "yunmu": [
+      "i"
+    ],
+    "pinyin_plain": [
+      "xi"
+    ]
+  },
+  {
     "char": "御",
     "pinyin": [
       "yù"
@@ -13332,6 +13650,18 @@
     ],
     "pinyin_plain": [
       "yu"
+    ]
+  },
+  {
+    "char": "徨",
+    "pinyin": [
+      "huáng"
+    ],
+    "yunmu": [
+      "uang"
+    ],
+    "pinyin_plain": [
+      "huang"
     ]
   },
   {
@@ -13443,6 +13773,18 @@
     ]
   },
   {
+    "char": "忖",
+    "pinyin": [
+      "cǔn"
+    ],
+    "yunmu": [
+      "un"
+    ],
+    "pinyin_plain": [
+      "cun"
+    ]
+  },
+  {
     "char": "志",
     "pinyin": [
       "zhì"
@@ -13488,6 +13830,18 @@
     ],
     "pinyin_plain": [
       "zhong"
+    ]
+  },
+  {
+    "char": "忡",
+    "pinyin": [
+      "chōng"
+    ],
+    "yunmu": [
+      "ong"
+    ],
+    "pinyin_plain": [
+      "chong"
     ]
   },
   {
@@ -13611,6 +13965,30 @@
     ]
   },
   {
+    "char": "怅",
+    "pinyin": [
+      "chàng"
+    ],
+    "yunmu": [
+      "ang"
+    ],
+    "pinyin_plain": [
+      "chang"
+    ]
+  },
+  {
+    "char": "怆",
+    "pinyin": [
+      "chuàng"
+    ],
+    "yunmu": [
+      "uang"
+    ],
+    "pinyin_plain": [
+      "chuang"
+    ]
+  },
+  {
     "char": "怎",
     "pinyin": [
       "zěn"
@@ -13620,6 +13998,18 @@
     ],
     "pinyin_plain": [
       "zen"
+    ]
+  },
+  {
+    "char": "怏",
+    "pinyin": [
+      "yàng"
+    ],
+    "yunmu": [
+      "iang"
+    ],
+    "pinyin_plain": [
+      "yang"
     ]
   },
   {
@@ -13947,6 +14337,18 @@
     ]
   },
   {
+    "char": "恰",
+    "pinyin": [
+      "qià"
+    ],
+    "yunmu": [
+      "ia"
+    ],
+    "pinyin_plain": [
+      "qia"
+    ]
+  },
+  {
     "char": "恳",
     "pinyin": [
       "kěn"
@@ -14140,6 +14542,18 @@
     ]
   },
   {
+    "char": "悴",
+    "pinyin": [
+      "cuì"
+    ],
+    "yunmu": [
+      "ui"
+    ],
+    "pinyin_plain": [
+      "cui"
+    ]
+  },
+  {
     "char": "悸",
     "pinyin": [
       "jì"
@@ -14149,6 +14563,18 @@
     ],
     "pinyin_plain": [
       "ji"
+    ]
+  },
+  {
+    "char": "悻",
+    "pinyin": [
+      "xìng"
+    ],
+    "yunmu": [
+      "ing"
+    ],
+    "pinyin_plain": [
+      "xing"
     ]
   },
   {
@@ -14221,6 +14647,30 @@
     ],
     "pinyin_plain": [
       "ti"
+    ]
+  },
+  {
+    "char": "惘",
+    "pinyin": [
+      "wǎng"
+    ],
+    "yunmu": [
+      "uang"
+    ],
+    "pinyin_plain": [
+      "wang"
+    ]
+  },
+  {
+    "char": "惚",
+    "pinyin": [
+      "hū"
+    ],
+    "yunmu": [
+      "u"
+    ],
+    "pinyin_plain": [
+      "hu"
     ]
   },
   {
@@ -14464,6 +14914,18 @@
     ]
   },
   {
+    "char": "愕",
+    "pinyin": [
+      "è"
+    ],
+    "yunmu": [
+      "e"
+    ],
+    "pinyin_plain": [
+      "e"
+    ]
+  },
+  {
     "char": "愚",
     "pinyin": [
       "yú"
@@ -14485,6 +14947,18 @@
     ],
     "pinyin_plain": [
       "gan"
+    ]
+  },
+  {
+    "char": "愣",
+    "pinyin": [
+      "lèng"
+    ],
+    "yunmu": [
+      "eng"
+    ],
+    "pinyin_plain": [
+      "leng"
     ]
   },
   {
@@ -14677,6 +15151,18 @@
     ],
     "pinyin_plain": [
       "han"
+    ]
+  },
+  {
+    "char": "憬",
+    "pinyin": [
+      "jǐng"
+    ],
+    "yunmu": [
+      "ing"
+    ],
+    "pinyin_plain": [
+      "jing"
     ]
   },
   {
@@ -15809,6 +16295,21 @@
     ],
     "pinyin_plain": [
       "tuo"
+    ]
+  },
+  {
+    "char": "拗",
+    "pinyin": [
+      "ào",
+      "niù"
+    ],
+    "yunmu": [
+      "ao",
+      "iu"
+    ],
+    "pinyin_plain": [
+      "ao",
+      "niu"
     ]
   },
   {
@@ -18547,6 +19048,18 @@
     ]
   },
   {
+    "char": "昵",
+    "pinyin": [
+      "nì"
+    ],
+    "yunmu": [
+      "i"
+    ],
+    "pinyin_plain": [
+      "ni"
+    ]
+  },
+  {
     "char": "昼",
     "pinyin": [
       "zhòu"
@@ -18788,6 +19301,18 @@
     ]
   },
   {
+    "char": "暄",
+    "pinyin": [
+      "xuān"
+    ],
+    "yunmu": [
+      "üan"
+    ],
+    "pinyin_plain": [
+      "xuan"
+    ]
+  },
+  {
     "char": "暇",
     "pinyin": [
       "xiá"
@@ -18881,6 +19406,18 @@
     ],
     "pinyin_plain": [
       "pu"
+    ]
+  },
+  {
+    "char": "曦",
+    "pinyin": [
+      "xī"
+    ],
+    "yunmu": [
+      "i"
+    ],
+    "pinyin_plain": [
+      "xi"
     ]
   },
   {
@@ -19369,6 +19906,18 @@
     ]
   },
   {
+    "char": "杞",
+    "pinyin": [
+      "qǐ"
+    ],
+    "yunmu": [
+      "i"
+    ],
+    "pinyin_plain": [
+      "qi"
+    ]
+  },
+  {
     "char": "束",
     "pinyin": [
       "shù"
@@ -19463,6 +20012,18 @@
     ],
     "pinyin_plain": [
       "jie"
+    ]
+  },
+  {
+    "char": "杷",
+    "pinyin": [
+      "pá"
+    ],
+    "yunmu": [
+      "a"
+    ],
+    "pinyin_plain": [
+      "pa"
     ]
   },
   {
@@ -19814,6 +20375,18 @@
     ],
     "pinyin_plain": [
       "cha"
+    ]
+  },
+  {
+    "char": "柩",
+    "pinyin": [
+      "jiù"
+    ],
+    "yunmu": [
+      "iu"
+    ],
+    "pinyin_plain": [
+      "jiu"
     ]
   },
   {
@@ -20301,6 +20874,18 @@
     ]
   },
   {
+    "char": "梏",
+    "pinyin": [
+      "gù"
+    ],
+    "yunmu": [
+      "u"
+    ],
+    "pinyin_plain": [
+      "gu"
+    ]
+  },
+  {
     "char": "梗",
     "pinyin": [
       "gěng"
@@ -20663,6 +21248,18 @@
     ]
   },
   {
+    "char": "楂",
+    "pinyin": [
+      "zhā"
+    ],
+    "yunmu": [
+      "a"
+    ],
+    "pinyin_plain": [
+      "zha"
+    ]
+  },
+  {
     "char": "楔",
     "pinyin": [
       "xiē"
@@ -20804,6 +21401,18 @@
     ],
     "pinyin_plain": [
       "que"
+    ]
+  },
+  {
+    "char": "榻",
+    "pinyin": [
+      "tà"
+    ],
+    "yunmu": [
+      "a"
+    ],
+    "pinyin_plain": [
+      "ta"
     ]
   },
   {
@@ -20975,6 +21584,18 @@
     ],
     "pinyin_plain": [
       "xi"
+    ]
+  },
+  {
+    "char": "檐",
+    "pinyin": [
+      "yán"
+    ],
+    "yunmu": [
+      "ian"
+    ],
+    "pinyin_plain": [
+      "yan"
     ]
   },
   {
@@ -22046,6 +22667,18 @@
     ],
     "pinyin_plain": [
       "chen"
+    ]
+  },
+  {
+    "char": "沌",
+    "pinyin": [
+      "dùn"
+    ],
+    "yunmu": [
+      "un"
+    ],
+    "pinyin_plain": [
+      "dun"
     ]
   },
   {
@@ -23432,6 +24065,18 @@
     ]
   },
   {
+    "char": "渎",
+    "pinyin": [
+      "dú"
+    ],
+    "yunmu": [
+      "u"
+    ],
+    "pinyin_plain": [
+      "du"
+    ]
+  },
+  {
     "char": "渐",
     "pinyin": [
       "jiàn"
@@ -24008,6 +24653,18 @@
     ]
   },
   {
+    "char": "漉",
+    "pinyin": [
+      "lù"
+    ],
+    "yunmu": [
+      "u"
+    ],
+    "pinyin_plain": [
+      "lu"
+    ]
+  },
+  {
     "char": "漏",
     "pinyin": [
       "lòu"
@@ -24152,6 +24809,18 @@
     ]
   },
   {
+    "char": "潢",
+    "pinyin": [
+      "huáng"
+    ],
+    "yunmu": [
+      "uang"
+    ],
+    "pinyin_plain": [
+      "huang"
+    ]
+  },
+  {
     "char": "潦",
     "pinyin": [
       "lǎo"
@@ -24185,6 +24854,18 @@
     ],
     "pinyin_plain": [
       "chao"
+    ]
+  },
+  {
+    "char": "潺",
+    "pinyin": [
+      "chán"
+    ],
+    "yunmu": [
+      "an"
+    ],
+    "pinyin_plain": [
+      "chan"
     ]
   },
   {
@@ -24294,6 +24975,18 @@
     ],
     "pinyin_plain": [
       "pu"
+    ]
+  },
+  {
+    "char": "瀚",
+    "pinyin": [
+      "hàn"
+    ],
+    "yunmu": [
+      "an"
+    ],
+    "pinyin_plain": [
+      "han"
     ]
   },
   {
@@ -25526,6 +26219,18 @@
     ]
   },
   {
+    "char": "犷",
+    "pinyin": [
+      "guǎng"
+    ],
+    "yunmu": [
+      "uang"
+    ],
+    "pinyin_plain": [
+      "guang"
+    ]
+  },
+  {
     "char": "犹",
     "pinyin": [
       "yóu"
@@ -25862,6 +26567,18 @@
     ]
   },
   {
+    "char": "獗",
+    "pinyin": [
+      "jué"
+    ],
+    "yunmu": [
+      "üe"
+    ],
+    "pinyin_plain": [
+      "jue"
+    ]
+  },
+  {
     "char": "獭",
     "pinyin": [
       "tǎ"
@@ -26057,6 +26774,18 @@
     ]
   },
   {
+    "char": "珑",
+    "pinyin": [
+      "lóng"
+    ],
+    "yunmu": [
+      "ong"
+    ],
+    "pinyin_plain": [
+      "long"
+    ]
+  },
+  {
     "char": "珠",
     "pinyin": [
       "zhū"
@@ -26215,6 +26944,18 @@
     ]
   },
   {
+    "char": "瑙",
+    "pinyin": [
+      "nǎo"
+    ],
+    "yunmu": [
+      "ao"
+    ],
+    "pinyin_plain": [
+      "nao"
+    ]
+  },
+  {
     "char": "瑚",
     "pinyin": [
       "hú"
@@ -26287,6 +27028,18 @@
     ]
   },
   {
+    "char": "璨",
+    "pinyin": [
+      "càn"
+    ],
+    "yunmu": [
+      "an"
+    ],
+    "pinyin_plain": [
+      "can"
+    ]
+  },
+  {
     "char": "瓜",
     "pinyin": [
       "guā"
@@ -26356,6 +27109,18 @@
     ],
     "pinyin_plain": [
       "weng"
+    ]
+  },
+  {
+    "char": "瓴",
+    "pinyin": [
+      "líng"
+    ],
+    "yunmu": [
+      "ing"
+    ],
+    "pinyin_plain": [
+      "ling"
     ]
   },
   {
@@ -27179,6 +27944,18 @@
     ]
   },
   {
+    "char": "瘠",
+    "pinyin": [
+      "jí"
+    ],
+    "yunmu": [
+      "i"
+    ],
+    "pinyin_plain": [
+      "ji"
+    ]
+  },
+  {
     "char": "瘤",
     "pinyin": [
       "liú"
@@ -27262,6 +28039,18 @@
     ],
     "pinyin_plain": [
       "que"
+    ]
+  },
+  {
+    "char": "瘾",
+    "pinyin": [
+      "yǐn"
+    ],
+    "yunmu": [
+      "in"
+    ],
+    "pinyin_plain": [
+      "yin"
     ]
   },
   {
@@ -27418,6 +28207,18 @@
     ],
     "pinyin_plain": [
       "wan"
+    ]
+  },
+  {
+    "char": "皙",
+    "pinyin": [
+      "xī"
+    ],
+    "yunmu": [
+      "i"
+    ],
+    "pinyin_plain": [
+      "xi"
     ]
   },
   {
@@ -27853,6 +28654,18 @@
     ]
   },
   {
+    "char": "眸",
+    "pinyin": [
+      "móu"
+    ],
+    "yunmu": [
+      "ou"
+    ],
+    "pinyin_plain": [
+      "mou"
+    ]
+  },
+  {
     "char": "眺",
     "pinyin": [
       "tiào"
@@ -27898,6 +28711,18 @@
     ],
     "pinyin_plain": [
       "zheng"
+    ]
+  },
+  {
+    "char": "睐",
+    "pinyin": [
+      "lài"
+    ],
+    "yunmu": [
+      "ai"
+    ],
+    "pinyin_plain": [
+      "lai"
     ]
   },
   {
@@ -28090,6 +28915,18 @@
     ],
     "pinyin_plain": [
       "shun"
+    ]
+  },
+  {
+    "char": "瞰",
+    "pinyin": [
+      "kàn"
+    ],
+    "yunmu": [
+      "an"
+    ],
+    "pinyin_plain": [
+      "kan"
     ]
   },
   {
@@ -28414,6 +29251,18 @@
     ],
     "pinyin_plain": [
       "za"
+    ]
+  },
+  {
+    "char": "砺",
+    "pinyin": [
+      "lì"
+    ],
+    "yunmu": [
+      "i"
+    ],
+    "pinyin_plain": [
+      "li"
     ]
   },
   {
@@ -28849,6 +29698,18 @@
     ]
   },
   {
+    "char": "祀",
+    "pinyin": [
+      "sì"
+    ],
+    "yunmu": [
+      "i"
+    ],
+    "pinyin_plain": [
+      "si"
+    ]
+  },
+  {
     "char": "祁",
     "pinyin": [
       "qí"
@@ -28870,6 +29731,18 @@
     ],
     "pinyin_plain": [
       "qi"
+    ]
+  },
+  {
+    "char": "祉",
+    "pinyin": [
+      "zhǐ"
+    ],
+    "yunmu": [
+      "i"
+    ],
+    "pinyin_plain": [
+      "zhi"
     ]
   },
   {
@@ -29003,6 +29876,21 @@
     ],
     "pinyin_plain": [
       "lu"
+    ]
+  },
+  {
+    "char": "禅",
+    "pinyin": [
+      "chán",
+      "shàn"
+    ],
+    "yunmu": [
+      "an",
+      "an"
+    ],
+    "pinyin_plain": [
+      "chan",
+      "shan"
     ]
   },
   {
@@ -29378,6 +30266,18 @@
     ]
   },
   {
+    "char": "稞",
+    "pinyin": [
+      "kē"
+    ],
+    "yunmu": [
+      "e"
+    ],
+    "pinyin_plain": [
+      "ke"
+    ]
+  },
+  {
     "char": "稠",
     "pinyin": [
       "chóu"
@@ -29390,6 +30290,18 @@
     ]
   },
   {
+    "char": "稣",
+    "pinyin": [
+      "sū"
+    ],
+    "yunmu": [
+      "u"
+    ],
+    "pinyin_plain": [
+      "su"
+    ]
+  },
+  {
     "char": "稳",
     "pinyin": [
       "wěn"
@@ -29399,6 +30311,18 @@
     ],
     "pinyin_plain": [
       "wen"
+    ]
+  },
+  {
+    "char": "稷",
+    "pinyin": [
+      "jì"
+    ],
+    "yunmu": [
+      "i"
+    ],
+    "pinyin_plain": [
+      "ji"
     ]
   },
   {
@@ -30074,6 +30998,18 @@
     ]
   },
   {
+    "char": "筝",
+    "pinyin": [
+      "zhēng"
+    ],
+    "yunmu": [
+      "eng"
+    ],
+    "pinyin_plain": [
+      "zheng"
+    ]
+  },
+  {
     "char": "筷",
     "pinyin": [
       "kuài"
@@ -30335,6 +31271,19 @@
     ],
     "pinyin_plain": [
       "huang"
+    ]
+  },
+  {
+    "char": "簸",
+    "pinyin": [
+      "bǒ",
+      "bò"
+    ],
+    "yunmu": [
+      "o"
+    ],
+    "pinyin_plain": [
+      "bo"
     ]
   },
   {
@@ -31676,6 +32625,18 @@
     ]
   },
   {
+    "char": "缪",
+    "pinyin": [
+      "móu"
+    ],
+    "yunmu": [
+      "ou"
+    ],
+    "pinyin_plain": [
+      "mou"
+    ]
+  },
+  {
     "char": "缮",
     "pinyin": [
       "shàn"
@@ -32677,6 +33638,18 @@
     ]
   },
   {
+    "char": "肴",
+    "pinyin": [
+      "yáo"
+    ],
+    "yunmu": [
+      "iao"
+    ],
+    "pinyin_plain": [
+      "yao"
+    ]
+  },
+  {
     "char": "肺",
     "pinyin": [
       "fèi"
@@ -32842,6 +33815,18 @@
     ],
     "pinyin_plain": [
       "hu"
+    ]
+  },
+  {
+    "char": "胧",
+    "pinyin": [
+      "lóng"
+    ],
+    "yunmu": [
+      "ong"
+    ],
+    "pinyin_plain": [
+      "long"
     ]
   },
   {
@@ -33517,6 +34502,18 @@
     ],
     "pinyin_plain": [
       "jiu"
+    ]
+  },
+  {
+    "char": "臾",
+    "pinyin": [
+      "yú"
+    ],
+    "yunmu": [
+      "ü"
+    ],
+    "pinyin_plain": [
+      "yu"
     ]
   },
   {
@@ -34267,6 +35264,18 @@
     ]
   },
   {
+    "char": "茏",
+    "pinyin": [
+      "lóng"
+    ],
+    "yunmu": [
+      "ong"
+    ],
+    "pinyin_plain": [
+      "long"
+    ]
+  },
+  {
     "char": "茧",
     "pinyin": [
       "jiǎn"
@@ -34520,6 +35529,18 @@
     ]
   },
   {
+    "char": "荼",
+    "pinyin": [
+      "tú"
+    ],
+    "yunmu": [
+      "u"
+    ],
+    "pinyin_plain": [
+      "tu"
+    ]
+  },
+  {
     "char": "莆",
     "pinyin": [
       "pú"
@@ -34556,6 +35577,18 @@
     "pinyin_plain": [
       "sha",
       "suo"
+    ]
+  },
+  {
+    "char": "莓",
+    "pinyin": [
+      "méi"
+    ],
+    "yunmu": [
+      "ei"
+    ],
+    "pinyin_plain": [
+      "mei"
     ]
   },
   {
@@ -34736,6 +35769,18 @@
     ],
     "pinyin_plain": [
       "fei"
+    ]
+  },
+  {
+    "char": "萃",
+    "pinyin": [
+      "cuì"
+    ],
+    "yunmu": [
+      "ui"
+    ],
+    "pinyin_plain": [
+      "cui"
     ]
   },
   {
@@ -35116,6 +36161,18 @@
     ]
   },
   {
+    "char": "蓿",
+    "pinyin": [
+      "xu"
+    ],
+    "yunmu": [
+      "ü"
+    ],
+    "pinyin_plain": [
+      "xu"
+    ]
+  },
+  {
     "char": "蔑",
     "pinyin": [
       "miè"
@@ -35236,6 +36293,18 @@
     ]
   },
   {
+    "char": "蕃",
+    "pinyin": [
+      "bō"
+    ],
+    "yunmu": [
+      "o"
+    ],
+    "pinyin_plain": [
+      "bo"
+    ]
+  },
+  {
     "char": "蕉",
     "pinyin": [
       "jiāo"
@@ -35293,6 +36362,18 @@
     ],
     "pinyin_plain": [
       "bao"
+    ]
+  },
+  {
+    "char": "薇",
+    "pinyin": [
+      "wēi"
+    ],
+    "yunmu": [
+      "ui"
+    ],
+    "pinyin_plain": [
+      "wei"
     ]
   },
   {
@@ -35635,6 +36716,18 @@
     ]
   },
   {
+    "char": "蚓",
+    "pinyin": [
+      "yǐn"
+    ],
+    "yunmu": [
+      "in"
+    ],
+    "pinyin_plain": [
+      "yin"
+    ]
+  },
+  {
     "char": "蚕",
     "pinyin": [
       "cán"
@@ -35866,6 +36959,18 @@
     ]
   },
   {
+    "char": "蜓",
+    "pinyin": [
+      "tíng"
+    ],
+    "yunmu": [
+      "ing"
+    ],
+    "pinyin_plain": [
+      "ting"
+    ]
+  },
+  {
     "char": "蜕",
     "pinyin": [
       "tuì"
@@ -35974,6 +37079,18 @@
     ]
   },
   {
+    "char": "蝠",
+    "pinyin": [
+      "fú"
+    ],
+    "yunmu": [
+      "u"
+    ],
+    "pinyin_plain": [
+      "fu"
+    ]
+  },
+  {
     "char": "蝴",
     "pinyin": [
       "hú"
@@ -36031,6 +37148,18 @@
     ],
     "pinyin_plain": [
       "luo"
+    ]
+  },
+  {
+    "char": "蟀",
+    "pinyin": [
+      "shuài"
+    ],
+    "yunmu": [
+      "uai"
+    ],
+    "pinyin_plain": [
+      "shuai"
     ]
   },
   {
@@ -36268,6 +37397,18 @@
     ]
   },
   {
+    "char": "袂",
+    "pinyin": [
+      "mèi"
+    ],
+    "yunmu": [
+      "ei"
+    ],
+    "pinyin_plain": [
+      "mei"
+    ]
+  },
+  {
     "char": "袄",
     "pinyin": [
       "ǎo"
@@ -36277,6 +37418,18 @@
     ],
     "pinyin_plain": [
       "ao"
+    ]
+  },
+  {
+    "char": "袅",
+    "pinyin": [
+      "niǎo"
+    ],
+    "yunmu": [
+      "iao"
+    ],
+    "pinyin_plain": [
+      "niao"
     ]
   },
   {
@@ -36337,6 +37490,18 @@
     ],
     "pinyin_plain": [
       "wa"
+    ]
+  },
+  {
+    "char": "袤",
+    "pinyin": [
+      "mào"
+    ],
+    "yunmu": [
+      "ao"
+    ],
+    "pinyin_plain": [
+      "mao"
     ]
   },
   {
@@ -36409,6 +37574,18 @@
     ],
     "pinyin_plain": [
       "zhuang"
+    ]
+  },
+  {
+    "char": "裆",
+    "pinyin": [
+      "dāng"
+    ],
+    "yunmu": [
+      "ang"
+    ],
+    "pinyin_plain": [
+      "dang"
     ]
   },
   {
@@ -36714,6 +37891,18 @@
     ]
   },
   {
+    "char": "觑",
+    "pinyin": [
+      "qù"
+    ],
+    "yunmu": [
+      "ü"
+    ],
+    "pinyin_plain": [
+      "qu"
+    ]
+  },
+  {
     "char": "角",
     "pinyin": [
       "jiǎo"
@@ -36915,6 +38104,18 @@
     ],
     "pinyin_plain": [
       "rang"
+    ]
+  },
+  {
+    "char": "讪",
+    "pinyin": [
+      "shàn"
+    ],
+    "yunmu": [
+      "an"
+    ],
+    "pinyin_plain": [
+      "shan"
     ]
   },
   {
@@ -37542,6 +38743,18 @@
     ]
   },
   {
+    "char": "诿",
+    "pinyin": [
+      "wěi"
+    ],
+    "yunmu": [
+      "ui"
+    ],
+    "pinyin_plain": [
+      "wei"
+    ]
+  },
+  {
     "char": "谁",
     "pinyin": [
       "shuí"
@@ -37700,6 +38913,18 @@
     ]
   },
   {
+    "char": "谛",
+    "pinyin": [
+      "dì"
+    ],
+    "yunmu": [
+      "i"
+    ],
+    "pinyin_plain": [
+      "di"
+    ]
+  },
+  {
     "char": "谜",
     "pinyin": [
       "mí"
@@ -37757,6 +38982,18 @@
     ],
     "pinyin_plain": [
       "qian"
+    ]
+  },
+  {
+    "char": "谧",
+    "pinyin": [
+      "mì"
+    ],
+    "yunmu": [
+      "i"
+    ],
+    "pinyin_plain": [
+      "mi"
     ]
   },
   {
@@ -37889,6 +39126,18 @@
     ],
     "pinyin_plain": [
       "wan"
+    ]
+  },
+  {
+    "char": "豚",
+    "pinyin": [
+      "tún"
+    ],
+    "yunmu": [
+      "un"
+    ],
+    "pinyin_plain": [
+      "tun"
     ]
   },
   {
@@ -38798,6 +40047,18 @@
     ]
   },
   {
+    "char": "跄",
+    "pinyin": [
+      "qiàng"
+    ],
+    "yunmu": [
+      "iang"
+    ],
+    "pinyin_plain": [
+      "qiang"
+    ]
+  },
+  {
     "char": "跋",
     "pinyin": [
       "bá"
@@ -38834,6 +40095,18 @@
     ]
   },
   {
+    "char": "跚",
+    "pinyin": [
+      "shān"
+    ],
+    "yunmu": [
+      "an"
+    ],
+    "pinyin_plain": [
+      "shan"
+    ]
+  },
+  {
     "char": "距",
     "pinyin": [
       "jù"
@@ -38855,6 +40128,18 @@
     ],
     "pinyin_plain": [
       "gen"
+    ]
+  },
+  {
+    "char": "跤",
+    "pinyin": [
+      "jiāo"
+    ],
+    "yunmu": [
+      "iao"
+    ],
+    "pinyin_plain": [
+      "jiao"
     ]
   },
   {
@@ -39134,6 +40419,18 @@
     ]
   },
   {
+    "char": "躏",
+    "pinyin": [
+      "lìn"
+    ],
+    "yunmu": [
+      "in"
+    ],
+    "pinyin_plain": [
+      "lin"
+    ]
+  },
+  {
     "char": "身",
     "pinyin": [
       "shēn"
@@ -39348,6 +40645,18 @@
     ],
     "pinyin_plain": [
       "jiao"
+    ]
+  },
+  {
+    "char": "辄",
+    "pinyin": [
+      "zhé"
+    ],
+    "yunmu": [
+      "e"
+    ],
+    "pinyin_plain": [
+      "zhe"
     ]
   },
   {
@@ -39869,6 +41178,18 @@
     ],
     "pinyin_plain": [
       "tiao"
+    ]
+  },
+  {
+    "char": "迩",
+    "pinyin": [
+      "ěr"
+    ],
+    "yunmu": [
+      "er"
+    ],
+    "pinyin_plain": [
+      "er"
     ]
   },
   {
@@ -40425,6 +41746,18 @@
     ]
   },
   {
+    "char": "邃",
+    "pinyin": [
+      "suì"
+    ],
+    "yunmu": [
+      "ui"
+    ],
+    "pinyin_plain": [
+      "sui"
+    ]
+  },
+  {
     "char": "邑",
     "pinyin": [
       "yì"
@@ -40542,6 +41875,18 @@
     ],
     "pinyin_plain": [
       "shao"
+    ]
+  },
+  {
+    "char": "邸",
+    "pinyin": [
+      "dǐ"
+    ],
+    "yunmu": [
+      "i"
+    ],
+    "pinyin_plain": [
+      "di"
     ]
   },
   {
@@ -41521,6 +42866,18 @@
     ]
   },
   {
+    "char": "铐",
+    "pinyin": [
+      "kào"
+    ],
+    "yunmu": [
+      "ao"
+    ],
+    "pinyin_plain": [
+      "kao"
+    ]
+  },
+  {
     "char": "铜",
     "pinyin": [
       "tóng"
@@ -41837,6 +43194,18 @@
     ]
   },
   {
+    "char": "锢",
+    "pinyin": [
+      "gù"
+    ],
+    "yunmu": [
+      "u"
+    ],
+    "pinyin_plain": [
+      "gu"
+    ]
+  },
+  {
     "char": "锣",
     "pinyin": [
       "luó"
@@ -41945,6 +43314,18 @@
     ]
   },
   {
+    "char": "锵",
+    "pinyin": [
+      "qiāng"
+    ],
+    "yunmu": [
+      "iang"
+    ],
+    "pinyin_plain": [
+      "qiang"
+    ]
+  },
+  {
     "char": "锹",
     "pinyin": [
       "qiāo"
@@ -42050,6 +43431,18 @@
     ],
     "pinyin_plain": [
       "bang"
+    ]
+  },
+  {
+    "char": "镖",
+    "pinyin": [
+      "biāo"
+    ],
+    "yunmu": [
+      "iao"
+    ],
+    "pinyin_plain": [
+      "biao"
     ]
   },
   {
@@ -42439,6 +43832,18 @@
     ]
   },
   {
+    "char": "阱",
+    "pinyin": [
+      "jǐng"
+    ],
+    "yunmu": [
+      "ing"
+    ],
+    "pinyin_plain": [
+      "jing"
+    ]
+  },
+  {
     "char": "防",
     "pinyin": [
       "fáng"
@@ -42736,6 +44141,18 @@
     ],
     "pinyin_plain": [
       "pei"
+    ]
+  },
+  {
+    "char": "陲",
+    "pinyin": [
+      "chuí"
+    ],
+    "yunmu": [
+      "ui"
+    ],
+    "pinyin_plain": [
+      "chui"
     ]
   },
   {
@@ -43258,6 +44675,18 @@
     ]
   },
   {
+    "char": "霾",
+    "pinyin": [
+      "mái"
+    ],
+    "yunmu": [
+      "ai"
+    ],
+    "pinyin_plain": [
+      "mai"
+    ]
+  },
+  {
     "char": "青",
     "pinyin": [
       "qīng"
@@ -43751,6 +45180,18 @@
     ]
   },
   {
+    "char": "颌",
+    "pinyin": [
+      "hé"
+    ],
+    "yunmu": [
+      "e"
+    ],
+    "pinyin_plain": [
+      "he"
+    ]
+  },
+  {
     "char": "颐",
     "pinyin": [
       "yí"
@@ -43952,6 +45393,30 @@
     ],
     "pinyin_plain": [
       "ji"
+    ]
+  },
+  {
+    "char": "饨",
+    "pinyin": [
+      "tún"
+    ],
+    "yunmu": [
+      "un"
+    ],
+    "pinyin_plain": [
+      "tun"
+    ]
+  },
+  {
+    "char": "饪",
+    "pinyin": [
+      "rèn"
+    ],
+    "yunmu": [
+      "en"
+    ],
+    "pinyin_plain": [
+      "ren"
     ]
   },
   {
@@ -44193,6 +45658,18 @@
     ],
     "pinyin_plain": [
       "xiang"
+    ]
+  },
+  {
+    "char": "馨",
+    "pinyin": [
+      "xīn"
+    ],
+    "yunmu": [
+      "in"
+    ],
+    "pinyin_plain": [
+      "xin"
     ]
   },
   {
@@ -44520,6 +45997,18 @@
     ]
   },
   {
+    "char": "骼",
+    "pinyin": [
+      "gé"
+    ],
+    "yunmu": [
+      "e"
+    ],
+    "pinyin_plain": [
+      "ge"
+    ]
+  },
+  {
     "char": "髓",
     "pinyin": [
       "suǐ"
@@ -44541,6 +46030,18 @@
     ],
     "pinyin_plain": [
       "gao"
+    ]
+  },
+  {
+    "char": "髦",
+    "pinyin": [
+      "máo"
+    ],
+    "yunmu": [
+      "ao"
+    ],
+    "pinyin_plain": [
+      "mao"
     ]
   },
   {
@@ -44892,6 +46393,18 @@
     ]
   },
   {
+    "char": "鹉",
+    "pinyin": [
+      "wǔ"
+    ],
+    "yunmu": [
+      "u"
+    ],
+    "pinyin_plain": [
+      "wu"
+    ]
+  },
+  {
     "char": "鹊",
     "pinyin": [
       "què"
@@ -44925,6 +46438,18 @@
     ],
     "pinyin_plain": [
       "he"
+    ]
+  },
+  {
+    "char": "鹭",
+    "pinyin": [
+      "lù"
+    ],
+    "yunmu": [
+      "u"
+    ],
+    "pinyin_plain": [
+      "lu"
     ]
   },
   {
@@ -45057,6 +46582,18 @@
     ],
     "pinyin_plain": [
       "mo"
+    ]
+  },
+  {
+    "char": "黠",
+    "pinyin": [
+      "xiá"
+    ],
+    "yunmu": [
+      "ia"
+    ],
+    "pinyin_plain": [
+      "xia"
     ]
   },
   {

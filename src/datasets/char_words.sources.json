@@ -1,0 +1,31 @@
+{
+  "generatedBy": "scripts/build-char-words.py",
+  "maxWordsPerChar": 50,
+  "sources": {
+    "M": {
+      "name": "现代汉语常用词表",
+      "url": "https://github.com/liangqi/chinese-frequency-word-list",
+      "note": "56,008 词人工审定词表，含频序号"
+    },
+    "S": {
+      "name": "SUBTLEX-CH",
+      "url": "https://github.com/leonsilicon/subtlex-ch-wf",
+      "note": "影视字幕词频，33.5M 词 / 6,243 部影视；仅字幕来源需通过影片覆盖度准入线"
+    },
+    "J": {
+      "name": "jieba dict.txt（干净子集）",
+      "url": "https://github.com/fxsjy/jieba",
+      "note": "仅用于覆盖率兜底；已剔除专名、数量词与分词碎片"
+    }
+  },
+  "legend": {
+    "MS": "常用词表 + 字幕都有",
+    "M": "仅常用词表",
+    "S": "仅字幕词频",
+    "J": "jieba 兜底"
+  },
+  "chars": 3379,
+  "words": 50499,
+  "fallbackChars": 1939,
+  "top20kCoverage": "16217/17173"
+}

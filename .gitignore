@@ -12,6 +12,10 @@ dist
 dist-ssr
 *.local
 
+# 词库审计的中间产物（jieba dict.txt 缓存、诗词语料、过滤后的候选词表）
+scripts/.cache/
+__pycache__/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

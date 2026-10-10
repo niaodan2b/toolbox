@@ -1,0 +1,537 @@
+{
+  "_comment": "衡量词典当代性的对照词表；tier=high 为通用书面/口语常用词，tier=mid 为当代新词",
+  "words": [
+    {
+      "w": "月亮",
+      "tier": "high"
+    },
+    {
+      "w": "手机",
+      "tier": "high"
+    },
+    {
+      "w": "地铁",
+      "tier": "high"
+    },
+    {
+      "w": "咖啡",
+      "tier": "high"
+    },
+    {
+      "w": "快递",
+      "tier": "high"
+    },
+    {
+      "w": "朋友圈",
+      "tier": "high"
+    },
+    {
+      "w": "直播",
+      "tier": "high"
+    },
+    {
+      "w": "外卖",
+      "tier": "high"
+    },
+    {
+      "w": "堵车",
+      "tier": "high"
+    },
+    {
+      "w": "加班",
+      "tier": "high"
+    },
+    {
+      "w": "减肥",
+      "tier": "high"
+    },
+    {
+      "w": "奶茶",
+      "tier": "high"
+    },
+    {
+      "w": "沙发",
+      "tier": "high"
+    },
+    {
+      "w": "打车",
+      "tier": "high"
+    },
+    {
+      "w": "二维码",
+      "tier": "high"
+    },
+    {
+      "w": "评论",
+      "tier": "high"
+    },
+    {
+      "w": "转发",
+      "tier": "high"
+    },
+    {
+      "w": "关注",
+      "tier": "high"
+    },
+    {
+      "w": "粉丝",
+      "tier": "high"
+    },
+    {
+      "w": "链接",
+      "tier": "high"
+    },
+    {
+      "w": "截图",
+      "tier": "high"
+    },
+    {
+      "w": "搜索",
+      "tier": "high"
+    },
+    {
+      "w": "导航",
+      "tier": "high"
+    },
+    {
+      "w": "共享",
+      "tier": "high"
+    },
+    {
+      "w": "耳机",
+      "tier": "high"
+    },
+    {
+      "w": "充电",
+      "tier": "high"
+    },
+    {
+      "w": "流量",
+      "tier": "high"
+    },
+    {
+      "w": "账号",
+      "tier": "high"
+    },
+    {
+      "w": "密码",
+      "tier": "high"
+    },
+    {
+      "w": "网课",
+      "tier": "high"
+    },
+    {
+      "w": "内存",
+      "tier": "high"
+    },
+    {
+      "w": "房贷",
+      "tier": "high"
+    },
+    {
+      "w": "房租",
+      "tier": "high"
+    },
+    {
+      "w": "面试",
+      "tier": "high"
+    },
+    {
+      "w": "简历",
+      "tier": "high"
+    },
+    {
+      "w": "打卡",
+      "tier": "high"
+    },
+    {
+      "w": "健身",
+      "tier": "high"
+    },
+    {
+      "w": "火锅",
+      "tier": "high"
+    },
+    {
+      "w": "夜宵",
+      "tier": "high"
+    },
+    {
+      "w": "口罩",
+      "tier": "high"
+    },
+    {
+      "w": "体检",
+      "tier": "high"
+    },
+    {
+      "w": "失眠",
+      "tier": "high"
+    },
+    {
+      "w": "熬夜",
+      "tier": "high"
+    },
+    {
+      "w": "后悔",
+      "tier": "high"
+    },
+    {
+      "w": "开心",
+      "tier": "high"
+    },
+    {
+      "w": "难过",
+      "tier": "high"
+    },
+    {
+      "w": "生气",
+      "tier": "high"
+    },
+    {
+      "w": "担心",
+      "tier": "high"
+    },
+    {
+      "w": "放心",
+      "tier": "high"
+    },
+    {
+      "w": "安心",
+      "tier": "high"
+    },
+    {
+      "w": "关心",
+      "tier": "high"
+    },
+    {
+      "w": "伤心",
+      "tier": "high"
+    },
+    {
+      "w": "用心",
+      "tier": "high"
+    },
+    {
+      "w": "耐心",
+      "tier": "high"
+    },
+    {
+      "w": "细心",
+      "tier": "high"
+    },
+    {
+      "w": "爱心",
+      "tier": "high"
+    },
+    {
+      "w": "同情",
+      "tier": "high"
+    },
+    {
+      "w": "感情",
+      "tier": "high"
+    },
+    {
+      "w": "心情",
+      "tier": "high"
+    },
+    {
+      "w": "热情",
+      "tier": "high"
+    },
+    {
+      "w": "爱情",
+      "tier": "high"
+    },
+    {
+      "w": "表情",
+      "tier": "high"
+    },
+    {
+      "w": "风景",
+      "tier": "high"
+    },
+    {
+      "w": "心情",
+      "tier": "high"
+    },
+    {
+      "w": "眼泪",
+      "tier": "high"
+    },
+    {
+      "w": "微笑",
+      "tier": "high"
+    },
+    {
+      "w": "拥抱",
+      "tier": "high"
+    },
+    {
+      "w": "温柔",
+      "tier": "high"
+    },
+    {
+      "w": "孤单",
+      "tier": "high"
+    },
+    {
+      "w": "遗憾",
+      "tier": "high"
+    },
+    {
+      "w": "想念",
+      "tier": "high"
+    },
+    {
+      "w": "陪伴",
+      "tier": "high"
+    },
+    {
+      "w": "沉默",
+      "tier": "high"
+    },
+    {
+      "w": "慌张",
+      "tier": "high"
+    },
+    {
+      "w": "倔强",
+      "tier": "high"
+    },
+    {
+      "w": "勇敢",
+      "tier": "high"
+    },
+    {
+      "w": "脆弱",
+      "tier": "high"
+    },
+    {
+      "w": "敏感",
+      "tier": "high"
+    },
+    {
+      "w": "疲惫",
+      "tier": "high"
+    },
+    {
+      "w": "青春",
+      "tier": "high"
+    },
+    {
+      "w": "少年",
+      "tier": "high"
+    },
+    {
+      "w": "故乡",
+      "tier": "high"
+    },
+    {
+      "w": "瞬间",
+      "tier": "high"
+    },
+    {
+      "w": "回忆",
+      "tier": "high"
+    },
+    {
+      "w": "幸福",
+      "tier": "high"
+    },
+    {
+      "w": "平淡",
+      "tier": "high"
+    },
+    {
+      "w": "日常",
+      "tier": "high"
+    },
+    {
+      "w": "牵挂",
+      "tier": "high"
+    },
+    {
+      "w": "告别",
+      "tier": "high"
+    },
+    {
+      "w": "重逢",
+      "tier": "high"
+    },
+    {
+      "w": "告白",
+      "tier": "high"
+    },
+    {
+      "w": "分手",
+      "tier": "high"
+    },
+    {
+      "w": "结婚",
+      "tier": "high"
+    },
+    {
+      "w": "相亲",
+      "tier": "high"
+    },
+    {
+      "w": "异地",
+      "tier": "high"
+    },
+    {
+      "w": "对象",
+      "tier": "high"
+    },
+    {
+      "w": "同事",
+      "tier": "high"
+    },
+    {
+      "w": "闺蜜",
+      "tier": "high"
+    },
+    {
+      "w": "前任",
+      "tier": "high"
+    },
+    {
+      "w": "委屈",
+      "tier": "high"
+    },
+    {
+      "w": "心酸",
+      "tier": "high"
+    },
+    {
+      "w": "崩溃",
+      "tier": "high"
+    },
+    {
+      "w": "迷茫",
+      "tier": "high"
+    },
+    {
+      "w": "孤独",
+      "tier": "high"
+    },
+    {
+      "w": "心动",
+      "tier": "high"
+    },
+    {
+      "w": "焦虑",
+      "tier": "high"
+    },
+    {
+      "w": "微信",
+      "tier": "mid"
+    },
+    {
+      "w": "点赞",
+      "tier": "mid"
+    },
+    {
+      "w": "扫码",
+      "tier": "mid"
+    },
+    {
+      "w": "充电宝",
+      "tier": "mid"
+    },
+    {
+      "w": "网购",
+      "tier": "mid"
+    },
+    {
+      "w": "短视频",
+      "tier": "mid"
+    },
+    {
+      "w": "表情包",
+      "tier": "mid"
+    },
+    {
+      "w": "内耗",
+      "tier": "mid"
+    },
+    {
+      "w": "破防",
+      "tier": "mid"
+    },
+    {
+      "w": "释怀",
+      "tier": "mid"
+    },
+    {
+      "w": "治愈",
+      "tier": "mid"
+    },
+    {
+      "w": "压力",
+      "tier": "mid"
+    },
+    {
+      "w": "健身房",
+      "tier": "mid"
+    },
+    {
+      "w": "瑜伽",
+      "tier": "mid"
+    },
+    {
+      "w": "房贷",
+      "tier": "mid"
+    },
+    {
+      "w": "脱口秀",
+      "tier": "mid"
+    },
+    {
+      "w": "弹幕",
+      "tier": "mid"
+    },
+    {
+      "w": "私信",
+      "tier": "mid"
+    },
+    {
+      "w": "取关",
+      "tier": "mid"
+    },
+    {
+      "w": "刷屏",
+      "tier": "mid"
+    },
+    {
+      "w": "云盘",
+      "tier": "mid"
+    },
+    {
+      "w": "备份",
+      "tier": "mid"
+    },
+    {
+      "w": "离线",
+      "tier": "mid"
+    },
+    {
+      "w": "缓存",
+      "tier": "mid"
+    },
+    {
+      "w": "待机",
+      "tier": "mid"
+    },
+    {
+      "w": "快充",
+      "tier": "mid"
+    },
+    {
+      "w": "无线",
+      "tier": "mid"
+    }
+  ]
+}
