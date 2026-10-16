@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { Check, ChevronDown, ChevronUp, ClipboardCopy } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -32,7 +32,6 @@ const charWords = charWordsData as Record<string, string[]>;
 export function RhymeFinderPanel() {
   const [selected, setSelected] = useState<string | null>(null);
   const [pickedWords, setPickedWords] = useState<string[]>([]);
-  const [activeChar, setActiveChar] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const [rhymeCollapsed, setRhymeCollapsed] = useState(false);
 
@@ -64,30 +63,9 @@ export function RhymeFinderPanel() {
     return data.filter((e) => e.pinyin_plain.some((p) => pinyinPool.has(p)));
   }, [selected]);
 
-  const dialogWords = activeChar
-    ? [activeChar, ...(charWords[activeChar] ?? [])]
-    : [];
-
-  const activeIndex = activeChar
-    ? filtered.findIndex((e) => e.char === activeChar)
-    : -1;
-
-  useEffect(() => {
-    if (!activeChar) return;
-    document
-      .getElementById(`rhyme-char-${activeChar}`)
-      ?.scrollIntoView({ block: "nearest" });
-  }, [activeChar]);
-
-  const goToAdjacent = (delta: number) => {
-    const entry = filtered[activeIndex + delta];
-    if (entry) setActiveChar(entry.char);
-  };
-
   const selectGroup = (label: string) => {
     setSelected((prev) => (prev === label ? null : label));
     setPickedWords([]);
-    setActiveChar(null);
   };
 
   const toggleWord = (word: string) => {
@@ -173,7 +151,7 @@ export function RhymeFinderPanel() {
                   ? "请先选择韵部"
                   : pickedWords.length > 0
                   ? `已选 ${pickedWords.length} 词 / 共 ${filtered.length} 字`
-                  : `${filtered.length} 字，点击选词`}
+                  : `${filtered.length} 字`}
               </div>
               <Button
                 size="sm"
@@ -192,27 +170,42 @@ export function RhymeFinderPanel() {
                   暂无内容
                 </div>
               ) : (
-                <div className="flex flex-wrap gap-1 sm:gap-2">
+                <div className="flex flex-col gap-3">
                   {filtered.map((e) => {
-                    const isPicked = pickedWords.some((w) => w.endsWith(e.char));
-                    const isActive = e.char === activeChar;
+                    const words = [e.char, ...(charWords[e.char] ?? [])];
+                    const hasPicked = words.some((word) => pickedSet.has(word));
                     return (
-                      <button
-                        key={e.char}
-                        id={`rhyme-char-${e.char}`}
-                        type="button"
-                        title={e.pinyin.join(" / ")}
-                        onClick={() => setActiveChar(e.char)}
-                        className={cn(
-                          "flex min-w-[2rem] sm:min-w-[2.25rem] items-center justify-center rounded-md border px-1.5 py-0.5 sm:px-2 sm:py-1 text-center transition-colors",
-                          isPicked
-                            ? "border-primary bg-primary text-primary-foreground"
-                            : "bg-card hover:bg-accent hover:text-accent-foreground",
-                          isActive && "ring-2 ring-offset-2 ring-primary ring-offset-background",
-                        )}
-                      >
-                        <span className="text-base sm:text-lg leading-tight">{e.char}</span>
-                      </button>
+                      <div key={e.char} className="border-b pb-3 last:border-b-0 last:pb-0">
+                        <div
+                          title={e.pinyin.join(" / ")}
+                          className={cn(
+                            "text-lg font-medium leading-none",
+                            hasPicked ? "text-primary" : "text-foreground",
+                          )}
+                        >
+                          {e.char}
+                        </div>
+                        <div className="mt-1.5 flex flex-wrap gap-1.5 sm:gap-2">
+                          {words.map((word) => {
+                            const isPicked = pickedSet.has(word);
+                            return (
+                              <button
+                                key={word}
+                                type="button"
+                                onClick={() => toggleWord(word)}
+                                className={cn(
+                                  "flex min-w-[2rem] items-center justify-center rounded-md border px-2 py-1 text-center transition-colors",
+                                  isPicked
+                                    ? "border-primary bg-primary text-primary-foreground"
+                                    : "bg-card hover:bg-accent hover:text-accent-foreground",
+                                )}
+                              >
+                                <span className="text-base sm:text-lg leading-tight">{word}</span>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
                     );
                   })}
                 </div>
@@ -221,72 +214,6 @@ export function RhymeFinderPanel() {
           </section>
         </CardContent>
       </Card>
-
-      {activeChar && (
-        <div
-          className="fixed inset-0 z-50 flex items-start justify-center bg-black/50 px-4 pb-4 pt-[12vh]"
-          onClick={() => setActiveChar(null)}
-        >
-          <div
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="word-picker-title"
-            className="flex max-h-[min(calc(88vh-1rem),640px)] w-full max-w-sm flex-col rounded-xl border bg-card shadow-lg"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <div className="flex items-center justify-between gap-2 border-b px-3 py-2">
-              <Button
-                size="sm"
-                variant="outline"
-                disabled={activeIndex <= 0}
-                onClick={() => goToAdjacent(-1)}
-                className="h-7 shrink-0 px-2 text-xs"
-              >
-                前一个字
-              </Button>
-              <h2 id="word-picker-title" className="text-lg font-semibold leading-none">
-                {activeChar}
-                {activeIndex >= 0 && (
-                  <span className="ml-2 text-sm font-normal text-muted-foreground">
-                    {activeIndex + 1}/{filtered.length}
-                  </span>
-                )}
-              </h2>
-              <Button
-                size="sm"
-                variant="outline"
-                disabled={activeIndex < 0 || activeIndex >= filtered.length - 1}
-                onClick={() => goToAdjacent(1)}
-                className="h-7 shrink-0 px-2 text-xs"
-              >
-                后一个字
-              </Button>
-            </div>
-            <div className="flex-1 overflow-y-auto p-3">
-              <div className="flex flex-wrap gap-1.5 sm:gap-2">
-                {dialogWords.map((word) => {
-                  const isPicked = pickedSet.has(word);
-                  return (
-                    <button
-                      key={word}
-                      type="button"
-                      onClick={() => toggleWord(word)}
-                      className={cn(
-                        "flex min-w-[2rem] items-center justify-center rounded-md border px-2 py-1 text-center transition-colors",
-                        isPicked
-                          ? "border-primary bg-primary text-primary-foreground"
-                          : "bg-card hover:bg-accent hover:text-accent-foreground",
-                      )}
-                    >
-                      <span className="text-base sm:text-lg leading-tight">{word}</span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
