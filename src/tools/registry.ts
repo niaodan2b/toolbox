@@ -4,6 +4,7 @@
 import type { ToolModule } from "./types";
 import base64 from "./base64";
 import imageSlicer from "./image-slicer";
+import bilibiliCoverPreview from "./bilibili-cover-preview";
 import rhymeFinder from "./rhyme-finder";
 import txtCombiner from "./txt-combiner";
 import audioVideoSeparator from "./audio-video-separator";
@@ -13,6 +14,7 @@ import videoSplitter from "./video-splitter";
 export const tools: ToolModule[] = [
   base64,
   imageSlicer,
+  bilibiliCoverPreview,
   rhymeFinder,
   txtCombiner,
   videoCounter,
