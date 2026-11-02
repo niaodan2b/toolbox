@@ -8,14 +8,13 @@
     "dev": "vite",
     "dev-app": "tauri dev",
     "build": "tsc && vite build",
+    "check": "tsc",
     "preview": "vite preview",
     "tauri": "tauri",
     "update-icons": "python3 scripts/prepare-android-icon.py && tauri icon src-tauri/icon-manifest.json -o src-tauri/icons && cp -f src/assets/icon.icns src-tauri/icons/",
     "build-desktop": "tauri build",
     "build-apk": "tauri android build --apk --target aarch64",
-    "patch": "tauri-version patch --no-lock -m \"release v%s\" && git push --follow-tags",
-    "minor": "tauri-version minor --no-lock -m \"release v%s\" && git push --follow-tags",
-    "major": "tauri-version major --no-lock -m \"release v%s\" && git push --follow-tags"
+    "release": "bun scripts/release.mjs"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.4",
