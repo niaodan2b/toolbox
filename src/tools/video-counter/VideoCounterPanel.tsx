@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -157,9 +156,6 @@ export function VideoCounterPanel() {
       <Card className="flex-1 flex flex-col">
         <CardHeader>
           <CardTitle>视频时长统计</CardTitle>
-          <CardDescription>
-            选择或拖放视频文件，自动统计每个视频的时长及总分钟数。
-          </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-1 flex-col gap-4">
           {/* 操作按钮 */}

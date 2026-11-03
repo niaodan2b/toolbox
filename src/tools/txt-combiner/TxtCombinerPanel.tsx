@@ -15,7 +15,6 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -196,9 +195,6 @@ export function TxtCombinerPanel() {
       <Card className="flex-1 flex flex-col">
         <CardHeader>
           <CardTitle>TXT 文件合并</CardTitle>
-          <CardDescription>
-            添加多个 TXT 文件，可编辑别名、调整顺序，合并为一个带中文序号标题的文件。
-          </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-1 flex-col gap-4">
           {/* 操作按钮 */}

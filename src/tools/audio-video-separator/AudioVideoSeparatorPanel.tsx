@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -187,9 +186,6 @@ export function AudioVideoSeparatorPanel() {
       <Card className="flex flex-1 flex-col">
         <CardHeader>
           <CardTitle>音视频分离</CardTitle>
-          <CardDescription>
-            选择视频后，将同时导出 MP3 音频和无声视频到指定目录。无声视频优先流复制以保持画质与速度。
-          </CardDescription>
         </CardHeader>
 
         <CardContent className="flex flex-1 flex-col gap-4">

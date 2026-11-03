@@ -16,7 +16,6 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -420,9 +419,6 @@ export function VideoSplitterPanel() {
       <Card className="flex flex-1 flex-col">
         <CardHeader>
           <CardTitle>视频分割</CardTitle>
-          <CardDescription>
-            选择视频或音频（mp3/wav）并标记切割点，点击「开始分割」勾选要导出的片段后选择输出目录。采用重编码以实现精确切割，耗时较流复制更长。
-          </CardDescription>
         </CardHeader>
 
         <CardContent className="flex flex-1 flex-col gap-4">

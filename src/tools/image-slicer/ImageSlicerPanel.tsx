@@ -388,9 +388,6 @@ export function ImageSlicerPanel() {
       <Card>
         <CardHeader>
           <CardTitle>切图</CardTitle>
-          <CardDescription>
-            选择一张本地图片，点击图片添加水平切割线，将其分为若干图块；可选择排除部分图块，最后拼接导出为 PNG。
-          </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-3">
           <div className="flex flex-wrap items-center gap-2">

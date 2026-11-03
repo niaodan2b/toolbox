@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -88,9 +87,6 @@ export function RhymeFinderPanel() {
       <Card className="flex min-h-0 flex-1 flex-col">
         <CardHeader className="px-3 py-2 sm:px-6 sm:py-4">
           <CardTitle className="text-base sm:text-lg">查韵</CardTitle>
-          <CardDescription className="text-xs sm:text-sm">
-            选择韵部查看对应的常用汉字
-          </CardDescription>
         </CardHeader>
         <CardContent className="flex min-h-0 flex-1 flex-col gap-3 px-3 sm:gap-4 sm:px-6 md:flex-row">
           {/* 左侧：韵部列表 */}

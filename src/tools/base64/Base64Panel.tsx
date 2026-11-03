@@ -13,7 +13,6 @@ import { Textarea } from "@/components/ui/textarea";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -68,9 +67,6 @@ export function Base64Panel() {
       <Card className="flex-1">
         <CardHeader>
           <CardTitle>Base64 编解码</CardTitle>
-          <CardDescription>
-            支持 UTF-8 中文；在下方输入文本或 Base64 字符串，点击按钮完成编码 / 解码。
-          </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-1 flex-col gap-4">
           <div className="flex flex-col gap-2">
